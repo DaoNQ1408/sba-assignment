@@ -1,42 +1,48 @@
-sba-workshop
-# Overview
+# sba-workshop
 
-- This is a school workshop. Help teacher to create math test for student, they can choose to upload there test into the test-bank in the system. 
-- Tech Stack
-  - FE: ReactJS, Typescripts, Vite, Tailwindcss
-  - BE: SpringBoot
-  - DB: MySQl, MongoDB
+## Overview
+- This is a school workshop. Help teacher to create math test for student, they can choose to upload there test into the test-bank in the system.
+  
+## Tech Stack
+- FE: ReactJS, Typescripts, Vite, Tailwindcss
+- BE: SpringBoot
+- DB: MySQl, MongoDB
 
-## Installation
-
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+## Implementation
+> Remember to run commands step by step
+### Front-End
+Follow the path to the [/workshop-fe](), then use the bellow command to install dependencies and run project locally.
 
 ```bash
-pip install foobar
+npm install
+npm run dev
 ```
 
-## Usage
+### Back-End
+Follow the path to the [/workshop-be-sql]() or [/workshop-be-nosql](), then use the bellow command to run project locally.
 
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+```bash
+mvn spring-boot:run
 ```
+## Build and Run
+> Remember to run commands step by step
+### Front-End
+Follow the path to the [/workshop-fe](), then use the bellow command to install dependencies and run project through the built version.
 
-## Contributing
+```bash
+npm install
+npm run build
+serve -s dist
+```
+Install the [@react-router/serve](https://www.npmjs.com/package/@react-router/serve) dependency if not installed, and run the project.
+```
+npm install @react-router/serve
+serve -s dist
+```
+### Back-End
+Follow the path to the [/workshop-be-sql]() or [/workshop-be-nosql](), then use the bellow command to run project locally. Replace the file_name by your actual project file name after build.
 
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+```bash
+mvn clean package
+java -jar /target/file_name.jar
+```
