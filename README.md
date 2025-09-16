@@ -40,7 +40,7 @@ npm install @react-router/serve
 serve -s dist
 ```
 ### Back-End
-Follow the path to the [/workshop-be-sql]() or [/workshop-be-nosql](), then use the bellow command to run project locally. Replace the file_name by your actual project file name after build.
+Follow the path to the [/workshop-be-sql]() or [/workshop-be-nosql](), then use the bellow command to run project locally. Replace the [file_name]() by your actual project file name after build.
 
 ```bash
 mvn clean package
