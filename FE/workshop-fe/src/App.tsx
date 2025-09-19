@@ -1,14 +1,14 @@
 import React from "react";
-import "./App.css";
+import Mindmap from "react-mindmap"
 
-function App() {
-  return (
-    <>
-      <body>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      </body>
-    </>
-  );
+const data = {
+  topic: "Main Idea",
+  children: [
+    { topic: "Branch 1", children: [{ topic: "Leaf 1" }, { topic: "Leaf 2" }] },
+    { topic: "Branch 2" },
+  ],
+};
+
+export default function App() {
+  return <Mindmap data={data} />;
 }
-
-export default App;
