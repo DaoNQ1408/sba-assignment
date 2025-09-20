@@ -1,0 +1,4 @@
+hooks: đc tái sử dụng nhiều lần: CRUD từ API
+services: call API
+components/layouts: navbar, footer, header
+components/ui: button, input
