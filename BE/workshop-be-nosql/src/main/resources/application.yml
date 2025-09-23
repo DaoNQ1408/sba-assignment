@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: workshop-be-nosql
+
+
+  data:
+    mongodb:
+      uri: mongodb://username:password@ip:posrt/databaseName?authSource=role
+
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
