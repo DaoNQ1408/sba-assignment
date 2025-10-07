@@ -23,4 +23,7 @@ public class QuestionType {
 
     @OneToMany(mappedBy = "questionType", cascade = CascadeType.ALL)
     private List<Question> questions;
+
+    @OneToMany(mappedBy = "questionType", cascade = CascadeType.ALL)
+    private List<MatrixLesson> matrixLessons;
 }

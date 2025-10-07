@@ -5,30 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "lessons")
+@Table(name = "matrices")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lesson {
+public class Matrix {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lesson_id")
+    @Column(name = "matrix_id")
     private long id;
 
-    @Column(name = "title", nullable = false, length = 50)
+    @Column(name = "title")
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "grade_id", nullable = false)
-    private Grade grade;
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
 
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-    private List<Question> questions;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "matrix", cascade = CascadeType.ALL)
     private List<MatrixLesson> matrixLessons;
-
 }

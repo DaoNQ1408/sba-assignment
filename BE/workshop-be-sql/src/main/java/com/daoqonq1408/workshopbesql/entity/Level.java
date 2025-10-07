@@ -23,4 +23,7 @@ public class Level {
 
     @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
     private List<Question> questions;
+
+    @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
+    private List<MatrixLesson> matrixLessons;
 }
