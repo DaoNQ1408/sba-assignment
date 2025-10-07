@@ -12,6 +12,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 function App() {
   const { isAuthenticated } = useAuthStore();
 
+
   // Auto-login if user data exists
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -20,6 +21,7 @@ function App() {
       useAuthStore.setState({ user, isAuthenticated: true });
     }
   }, [isAuthenticated]);
+
 
   return (
       <BrowserRouter>
