@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class DuplicateSubjectExceptionHandler {
+public class DuplicateObjectExceptionHandler {
 
     @ExceptionHandler(DuplicateObjectException.class)
-    public ResponseEntity<ApiResponse<Object>> handleDuplicateSubject(DuplicateObjectException ex) {
+    public ResponseEntity<ApiResponse<Object>> handleDuplicateObject(DuplicateObjectException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ApiResponse.error(null, ex.getMessage()));
     }

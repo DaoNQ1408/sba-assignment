@@ -4,7 +4,6 @@ import com.daoqonq1408.workshopbesql.dto.request.GradeRequest;
 import com.daoqonq1408.workshopbesql.dto.response.GradeResponse;
 import com.daoqonq1408.workshopbesql.entity.Grade;
 import com.daoqonq1408.workshopbesql.entity.Subject;
-import com.daoqonq1408.workshopbesql.exception.DuplicateObjectException;
 import com.daoqonq1408.workshopbesql.repository.GradeRepository;
 import com.daoqonq1408.workshopbesql.repository.SubjectRepository;
 import com.daoqonq1408.workshopbesql.service.GradeService;

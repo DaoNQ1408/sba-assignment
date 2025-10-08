@@ -31,4 +31,8 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     private List<MatrixLesson> matrixLessons;
 
+    public Lesson(String title, Grade grade) {
+        this.title = title;
+        this.grade = grade;
+    }
 }
