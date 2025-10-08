@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Login } from './pages/Login';
 import { Home } from './pages/Home';
 import { useAuthStore } from './stores/authStore';
+import Login from './pages/Login';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -28,7 +28,7 @@ function App() {
         <Routes>
           <Route
               path="/login"
-              element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+              element={isAuthenticated ? <Navigate to="/" /> : <Login/>}
           />
           <Route
               path="/"

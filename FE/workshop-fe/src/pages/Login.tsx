@@ -1,82 +1,46 @@
 import React, { useState } from 'react';
-import {
-    Container, Paper, TextField, Button, Typography,
-    Box, Alert, Card, CardContent
-} from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
-import { useAuthStore } from '../stores/authStore';
+import { TextField, Button, Box } from '@mui/material';
 
-export const Login: React.FC = () => {
-    const { login, isLoading, error, clearError } = useAuthStore();
-    const [formData, setFormData] = useState({ email: '', password: '' });
+const Login = () => {
+    // Correctly destructure useState to get both the variable and the setter function
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); // để validation trước khi gửi data đi
-        await login(formData);
-    };
-
-    const handleDemoLogin = () => {
-        setFormData({ email: 'admin@example.com', password: 'password123' });
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // This check will now work as expected
+        if (!username || !password) {
+            alert('Please enter both username and password.');
+            return;
+        }
+        console.log('username', username);
+        console.log('password', password);
+        // You would typically send the data to a server here
     };
 
     return (
-        <Container maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
-            <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
-                    <LockOutlined sx={{ fontSize: 40, color: 'primary.main', mb: 2 }} />
-                    <Typography variant="h4" component="h1" gutterBottom>
-                        Sign In
-                    </Typography>
-                </Box>
-
-                {error && (
-                    <Alert severity="error" onClose={clearError} sx={{ mb: 2 }}>
-                        {error}
-                    </Alert>
-                )}
-
-                <Box component="form" onSubmit={handleSubmit}>
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        label="Email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                        required
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        label="Password"
-                        type="password"
-                        value={formData.password}
-                        onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                        required
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? 'Signing in...' : 'Sign In'}
-                    </Button>
-                </Box>
-
-                <Card sx={{ mt: 3, bgcolor: 'primary.50' }}>
-                    <CardContent sx={{ p: 2 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Box>
-                                <Typography variant="body2" fontWeight="bold">Demo Account</Typography>
-                                <Typography variant="caption">admin@example.com / password123</Typography>
-                            </Box>
-                            <Button size="small" onClick={handleDemoLogin}>Fill</Button>
-                        </Box>
-                    </CardContent>
-                </Card>
-            </Paper>
-        </Container>
+        <>
+            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '300px' }}>
+                {/* Call the setter function in onChange */}
+                <TextField
+                    id="username"
+                    label="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <TextField
+                    id="password"
+                    label="Password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button type="submit" variant="contained" color="primary">
+                    Sign In
+                </Button>
+            </Box>
+        </>
     );
 };
+
+export default Login;
