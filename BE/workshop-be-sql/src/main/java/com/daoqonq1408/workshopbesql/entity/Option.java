@@ -16,7 +16,7 @@ public class Option {
     @Column(name = "option_id")
     private long id;
 
-    @Column(name = "option", nullable = false, length = 255)
+    @Column(name = "option_text", nullable = false, length = 255)
     private String option;
 
     @Column(name = "is_true", nullable = false)
