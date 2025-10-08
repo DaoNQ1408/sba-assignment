@@ -11,11 +11,8 @@ public class GenericExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGeneric(Exception ex) {
-        ApiResponse<Object> response = ApiResponse.builder()
-                .status("error")
-                .message(ex.getMessage())
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.error(null, ex.getMessage()));
     }
 }
 

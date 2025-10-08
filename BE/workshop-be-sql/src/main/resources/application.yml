@@ -11,8 +11,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      use_nationalized_character_data: true
     show-sql: true
-    database-platform: org.hibernate.dialect.SQLServerDialect
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
 
 server:
   port: 8080

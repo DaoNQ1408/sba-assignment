@@ -1,6 +1,7 @@
 package com.daoqonq1408.workshopbesql.exception.handler;
 
 import com.daoqonq1408.workshopbesql.dto.response.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,11 +20,14 @@ public class ValidationExceptionHandler {
                         err -> err.getField(),
                         err -> err.getDefaultMessage()
                 ));
-        ApiResponse<Map<String, String>> response = ApiResponse.<Map<String, String>>builder()
-                .status("error")
-                .data(errors)
-                .message("Validation failed")
-                .build();
-        return ResponseEntity.badRequest().body(response);
+
+        ApiResponse<Map<String, String>> response = new ApiResponse();
+        response.setStatus(false);
+        response.setMessage("Validation failed");
+        response.setData(errors);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(null, "Validation failed"));
     }
+
 }

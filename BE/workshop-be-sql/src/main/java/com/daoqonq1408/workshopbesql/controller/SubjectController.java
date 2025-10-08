@@ -5,6 +5,7 @@ import com.daoqonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daoqonq1408.workshopbesql.dto.response.SubjectResponse;
 import com.daoqonq1408.workshopbesql.service.SubjectService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,48 +21,33 @@ public class SubjectController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<SubjectResponse> getSubject(@PathVariable long id) {
+    public ResponseEntity<ApiResponse<SubjectResponse>> getSubject(@PathVariable long id) {
         SubjectResponse response = subjectService.getSubject(id);
-        return ApiResponse.<SubjectResponse>builder()
-                .status("success")
-                .data(response)
-                .build();
+        return ResponseEntity.ok(ApiResponse.success(response, "Subject retrieved successfully"));
     }
 
-    @GetMapping("")
-    public ApiResponse<List<SubjectResponse>> getAllSubjects() {
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
         List<SubjectResponse> subjects = subjectService.getAllSubjects();
-        return ApiResponse.<List<SubjectResponse>>builder()
-                .status("success")
-                .data(subjects)
-                .build();
+        return ResponseEntity.ok(ApiResponse.success(subjects, "All subjects retrieved successfully"));
     }
 
-    @PostMapping("")
-    public ApiResponse<SubjectResponse> addSubject(@Valid @RequestBody SubjectRequest request) {
+    @PostMapping
+    public ResponseEntity<ApiResponse<SubjectResponse>> addSubject(@Valid @RequestBody SubjectRequest request) {
         SubjectResponse response = subjectService.addSubject(request);
-        return ApiResponse.<SubjectResponse>builder()
-                .status("success")
-                .data(response)
-                .build();
+        return ResponseEntity.ok(ApiResponse.success(response, "Subject added successfully"));
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<SubjectResponse> updateSubject(@PathVariable long id,
-                                                      @Valid @RequestBody SubjectRequest request) {
+    public ResponseEntity<ApiResponse<SubjectResponse>> updateSubject(@PathVariable long id,
+                                                                      @Valid @RequestBody SubjectRequest request) {
         SubjectResponse response = subjectService.updateSubject(id, request);
-        return ApiResponse.<SubjectResponse>builder()
-                .status("success")
-                .data(response)
-                .build();
+        return ResponseEntity.ok(ApiResponse.success(response, "Subject updated successfully"));
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse<SubjectResponse> deleteSubject(@PathVariable long id) {
+    public ResponseEntity<ApiResponse<SubjectResponse>> deleteSubject(@PathVariable long id) {
         SubjectResponse response = subjectService.deleteSubject(id);
-        return ApiResponse.<SubjectResponse>builder()
-                .status("success")
-                .data(response)
-                .build();
+        return ResponseEntity.ok(ApiResponse.success(response, "Subject deleted successfully"));
     }
 }

@@ -3,12 +3,11 @@ package com.daoqonq1408.workshopbesql.service.impl;
 import com.daoqonq1408.workshopbesql.dto.request.SubjectRequest;
 import com.daoqonq1408.workshopbesql.dto.response.SubjectResponse;
 import com.daoqonq1408.workshopbesql.entity.Subject;
-import com.daoqonq1408.workshopbesql.exception.DuplicateSubjectException;
+import com.daoqonq1408.workshopbesql.exception.DuplicateObjectException;
 import com.daoqonq1408.workshopbesql.repository.SubjectRepository;
 import com.daoqonq1408.workshopbesql.service.SubjectService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +16,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class SubjectServiceImpl implements SubjectService {
 
-    @Autowired
-    private SubjectRepository subjectRepository;
+    private final SubjectRepository subjectRepository;
+
+    public SubjectServiceImpl(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
+    }
 
     @Override
     public SubjectResponse getSubject(long id) {
@@ -45,7 +47,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Transactional
     public SubjectResponse addSubject(SubjectRequest request) {
         subjectRepository.findByName(request.getName()).ifPresent(subject -> {
-            throw new DuplicateSubjectException("Subject already exists with name: " + request.getName());
+            throw new DuplicateObjectException("Subject already exists with name: " + request.getName());
         });
 
         Subject subject = subjectRepository.save(new Subject(request.getName()));
