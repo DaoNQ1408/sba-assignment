@@ -1,193 +1,223 @@
-import React, { useState } from 'react';
-import {
-    AppBar, Toolbar, Typography, Container, Grid, Paper,
-    TextField, MenuItem, Button, Box, Avatar, IconButton,
-    Accordion, AccordionSummary, AccordionDetails
-} from '@mui/material';
-import {
-    School, Logout, ExpandMore, Settings,
-    CloudUpload, Dashboard as DashboardIcon
-} from '@mui/icons-material';
-import { useAuthStore } from '../stores/authStore';
+import { Box, Typography, Button, Grid, Paper, AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from 'react';
 
-export const Home: React.FC = () => {
-    const { user, logout } = useAuthStore();
-    const [examForm, setExamForm] = useState({
-        subject: 'Toan',
-        grade: '',
-        questionCount: 4,
-        difficulty: 'thông hiểu'
-    });
+const Home = () => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-    const subjects = [
-        { value: 'Toan', label: 'Toán học' },
-        { value: 'Li', label: 'Vật lí' },
-        { value: 'Hoa', label: 'Hóa học' },
-        { value: 'Sinh', label: 'Sinh học' }
+    const menuItems = [
+        { label: 'Chương trình đào tạo', link: '#' },
+        { label: 'Tuyển sinh', link: '#' },
+        { label: 'Tin tức', link: '#' },
+        { label: 'Sự kiện', link: '#' },
+        { label: 'Về chúng tôi', link: '#' },
     ];
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setExamForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    };
-
-    const handleGenerate = () => {
-        alert('Generating exam with: ' + JSON.stringify(examForm));
-    };
-
     return (
-        <Box>
+        <Box sx={{ bgcolor: '#fff', minHeight: '100vh' }}>
             {/* Header */}
-            <AppBar position="static" sx={{ background: 'linear-gradient(45deg, #1976d2, #42a5f5)' }}>
+            <AppBar position="static" sx={{ bgcolor: '#FF6F00' }}>
                 <Toolbar>
-                    <School sx={{ mr: 2 }} />
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Typography variant="h6">AI-Exam Creator</Typography>
-                        <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                            Tạo đề thi tự động với AI
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 2, display: { xs: 'block', md: 'none' } }}
+                        onClick={handleClick}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        {menuItems.map((item, index) => (
+                            <MenuItem key={index} onClick={handleClose}>
+                                {item.label}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <img
+                            src="/fpt-logo.png"
+                            alt="FPT Logo"
+                            style={{ height: 40 }}
+                        />
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                color: '#fff',
+                                fontWeight: 700,
+                                letterSpacing: 1,
+                            }}
+                        >
+                            TRƯỜNG ĐẠI HỌC FPT
                         </Typography>
                     </Box>
-                    <Avatar src={user?.avatar} sx={{ mr: 2 }} />
-                    <Typography sx={{ mr: 2, display: { xs: 'none', sm: 'block' } }}>
-                        {user?.firstName}
-                    </Typography>
-                    <IconButton color="inherit" onClick={logout}>
-                        <Logout />
-                    </IconButton>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', gap: 2 }}>
+                        {menuItems.map((item, index) => (
+                            <Button key={index} color="inherit" href={item.link}>
+                                {item.label}
+                            </Button>
+                        ))}
+                        <Button
+                            variant="contained"
+                            sx={{
+                                bgcolor: '#fff',
+                                color: '#FF6F00',
+                                fontWeight: 600,
+                                boxShadow: 'none',
+                                '&:hover': { bgcolor: '#ffe0b2' },
+                            }}
+                        >
+                            Đăng nhập
+                        </Button>
+                    </Box>
                 </Toolbar>
             </AppBar>
 
-            <Container maxWidth="xl" sx={{ mt: 4 }}>
-                <Grid container spacing={3}>
-                    {/* Controls */}
-                    <Grid item xs={12} lg={5}>
-                        <Paper sx={{ p: 3, mb: 3 }}>
-                            <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                                <DashboardIcon sx={{ mr: 1 }} />
-                                Cấu hình đề thi
-                            </Typography>
+            {/* Hero Section */}
+            <Box
+                sx={{
+                    background: 'url("/background.jpg") center/cover no-repeat',
+                    minHeight: 420,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    px: 2,
+                    position: 'relative',
+                }}
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        bgcolor: 'rgba(255,111,0,0.25)',
+                        zIndex: 1,
+                    }}
+                />
+                <Box sx={{ position: 'relative', zIndex: 2 }}>
+                    <Typography
+                        variant="h3"
+                        sx={{
+                            color: '#FF6F00',
+                            fontWeight: 700,
+                            mt: 8,
+                            mb: 2,
+                            letterSpacing: 2,
+                            textShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                        }}
+                    >
+                        Chào mừng đến với Đại học FPT
+                    </Typography>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            color: '#fff',
+                            fontWeight: 400,
+                            mb: 4,
+                            textShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                        }}
+                    >
+                        Nơi khởi đầu cho tương lai của bạn
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            bgcolor: '#FF6F00',
+                            color: '#fff',
+                            fontWeight: 600,
+                            fontSize: 18,
+                            px: 4,
+                            py: 1.5,
+                            borderRadius: 2,
+                            boxShadow: 2,
+                            '&:hover': { bgcolor: '#e65c00' },
+                        }}
+                    >
+                        Tìm hiểu thêm
+                    </Button>
+                </Box>
+            </Box>
 
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        select
-                                        fullWidth
-                                        label="Môn học"
-                                        name="subject"
-                                        value={examForm.subject}
-                                        onChange={handleInputChange}
-                                    >
-                                        {subjects.map(subject => (
-                                            <MenuItem key={subject.value} value={subject.value}>
-                                                {subject.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        select
-                                        fullWidth
-                                        label="Lớp"
-                                        name="grade"
-                                        value={examForm.grade}
-                                        onChange={handleInputChange}
-                                    >
-                                        <MenuItem value="10">Lớp 10</MenuItem>
-                                        <MenuItem value="11">Lớp 11</MenuItem>
-                                        <MenuItem value="12">Lớp 12</MenuItem>
-                                    </TextField>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Số câu hỏi"
-                                        name="questionCount"
-                                        type="number"
-                                        value={examForm.questionCount}
-                                        onChange={handleInputChange}
-                                        inputProps={{ min: 1, max: 50 }}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        select
-                                        fullWidth
-                                        label="Mức độ"
-                                        name="difficulty"
-                                        value={examForm.difficulty}
-                                        onChange={handleInputChange}
-                                    >
-                                        <MenuItem value="nhận biết">Nhận biết</MenuItem>
-                                        <MenuItem value="thông hiểu">Thông hiểu</MenuItem>
-                                        <MenuItem value="vận dụng">Vận dụng</MenuItem>
-                                    </TextField>
-                                </Grid>
-                            </Grid>
+            {/* Info Section */}
+            <Box
+                sx={{
+                    maxWidth: 1100,
+                    mx: 'auto',
+                    mt: 6,
+                    px: 2,
+                    py: 4,
+                }}
+            >
+                <Grid container spacing={4}>
+                    <Grid item xs={12} md={4}>
+                        <Paper elevation={2} sx={{ p: 3, textAlign: 'center', borderTop: '4px solid #FF6F00' }}>
+                            <Typography variant="h6" sx={{ color: '#FF6F00', fontWeight: 700, mb: 1 }}>
+                                Chương trình đào tạo
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: '#333' }}>
+                                Đa dạng ngành học: CNTT, Kinh tế, Ngôn ngữ, Thiết kế... với chương trình chuẩn quốc tế.
+                            </Typography>
                         </Paper>
-
-                        {/* Advanced Options */}
-                        <Accordion sx={{ mb: 3 }}>
-                            <AccordionSummary expandIcon={<ExpandMore />}>
-                                <Settings sx={{ mr: 1 }} />
-                                <Typography>Tùy chọn nâng cao</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <TextField
-                                    fullWidth
-                                    label="Tên đề thi"
-                                    placeholder="VD: Kiểm tra 15 phút - Chương 1"
-                                    sx={{ mb: 2 }}
-                                />
-                                <Button
-                                    variant="outlined"
-                                    component="label"
-                                    startIcon={<CloudUpload />}
-                                    fullWidth
-                                >
-                                    Tải lên tài liệu
-                                    <input type="file" hidden multiple />
-                                </Button>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        {/* Generate Button */}
-                        <Button
-                            variant="contained"
-                            color="success"
-                            size="large"
-                            fullWidth
-                            onClick={handleGenerate}
-                        >
-                            🎯 Tạo đề thi
-                        </Button>
                     </Grid>
-
-                    {/* Preview */}
-                    <Grid item xs={12} lg={7}>
-                        <Paper sx={{ p: 3, minHeight: 400 }}>
-                            <Typography variant="h6" gutterBottom>
-                                📊 Xem trước ma trận
+                    <Grid item xs={12} md={4}>
+                        <Paper elevation={2} sx={{ p: 3, textAlign: 'center', borderTop: '4px solid #FF6F00' }}>
+                            <Typography variant="h6" sx={{ color: '#FF6F00', fontWeight: 700, mb: 1 }}>
+                                Môi trường hiện đại
                             </Typography>
-                            <Box
-                                sx={{
-                                    border: '2px dashed',
-                                    borderColor: 'grey.300',
-                                    borderRadius: 2,
-                                    p: 8,
-                                    textAlign: 'center',
-                                    color: 'text.secondary'
-                                }}
-                            >
-                                <Typography variant="h4" gutterBottom>📋</Typography>
-                                <Typography variant="h6">Ma trận đề thi</Typography>
-                                <Typography variant="body2">
-                                    Sẽ hiển thị sau khi cấu hình
-                                </Typography>
-                            </Box>
+                            <Typography variant="body2" sx={{ color: '#333' }}>
+                                Cơ sở vật chất tiên tiến, khuôn viên xanh, không gian sáng tạo và năng động.
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Paper elevation={2} sx={{ p: 3, textAlign: 'center', borderTop: '4px solid #FF6F00' }}>
+                            <Typography variant="h6" sx={{ color: '#FF6F00', fontWeight: 700, mb: 1 }}>
+                                Hỗ trợ sinh viên
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: '#333' }}>
+                                Tư vấn tuyển sinh, học bổng, hoạt động ngoại khóa, hỗ trợ việc làm sau tốt nghiệp.
+                            </Typography>
                         </Paper>
                     </Grid>
                 </Grid>
-            </Container>
+            </Box>
+
+            {/* Footer */}
+            <Box
+                sx={{
+                    bgcolor: '#FF6F00',
+                    color: '#fff',
+                    py: 3,
+                    mt: 8,
+                    textAlign: 'center',
+                }}
+            >
+                <Typography variant="body2">
+                    Địa chỉ: Khu Công nghệ cao, Quận 9, TP. Hồ Chí Minh | Hotline: 1900 7300
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                    &copy; {new Date().getFullYear()} Đại học FPT. All rights reserved.
+                </Typography>
+            </Box>
         </Box>
     );
 };
+
+export default Home;
