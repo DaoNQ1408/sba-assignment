@@ -1,5 +1,6 @@
 package com.daoqonq1408.workshopbesql.entity;
 
+import com.daoqonq1408.workshopbesql.dto.response.GradeResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,5 +32,13 @@ public class Grade {
     public Grade(String grade, Subject subject) {
         this.grade = grade;
         this.subject = subject;
+    }
+
+    public GradeResponse toResponse() {
+        return GradeResponse.builder()
+                .id(this.id)
+                .grade(this.grade)
+                .subjectId(this.subject.getId())
+                .build();
     }
 }

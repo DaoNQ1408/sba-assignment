@@ -1,5 +1,7 @@
 package com.daoqonq1408.workshopbesql.entity;
 
+import com.daoqonq1408.workshopbesql.dto.response.LessonResponse;
+import com.daoqonq1408.workshopbesql.dto.response.LevelResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,4 +28,11 @@ public class Level {
 
     @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
     private List<MatrixLesson> matrixLessons;
+
+    public LevelResponse toResponse() {
+        return LevelResponse.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
+    }
 }

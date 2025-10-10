@@ -1,5 +1,6 @@
 package com.daoqonq1408.workshopbesql.entity;
 
+import com.daoqonq1408.workshopbesql.dto.response.SubjectResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,5 +28,12 @@ public class Subject {
 
     public Subject(String name) {
         this.name = name;
+    }
+
+    public SubjectResponse toResponse() {
+        return SubjectResponse.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
     }
 }

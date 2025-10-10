@@ -2,6 +2,8 @@ package com.daoqonq1408.workshopbesql.service.impl;
 
 import com.daoqonq1408.workshopbesql.dto.request.LevelRequest;
 import com.daoqonq1408.workshopbesql.dto.response.LevelResponse;
+import com.daoqonq1408.workshopbesql.entity.Level;
+import com.daoqonq1408.workshopbesql.repository.LevelRepository;
 import com.daoqonq1408.workshopbesql.service.LevelService;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +11,16 @@ import java.util.List;
 
 @Service
 public class LevelServiceImpl implements LevelService {
+
+    private final LevelRepository levelRepository;
+
+    public LevelServiceImpl(LevelRepository levelRepository) {
+        this.levelRepository = levelRepository;
+    }
+
     @Override
     public LevelResponse getLevel(long id) {
+        Level level;
         return null;
     }
 
