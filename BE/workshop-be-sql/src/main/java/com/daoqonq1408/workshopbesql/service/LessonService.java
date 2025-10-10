@@ -2,6 +2,7 @@ package com.daoqonq1408.workshopbesql.service;
 
 import com.daoqonq1408.workshopbesql.dto.request.LessonRequest;
 import com.daoqonq1408.workshopbesql.dto.response.LessonResponse;
+import com.daoqonq1408.workshopbesql.entity.Lesson;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface LessonService {
     LessonResponse addLesson(LessonRequest lessonRequest);
     LessonResponse updateLesson(long id, LessonRequest lessonRequest);
     LessonResponse deleteLesson(long lessonId);
+    Lesson findById(long id);
 }

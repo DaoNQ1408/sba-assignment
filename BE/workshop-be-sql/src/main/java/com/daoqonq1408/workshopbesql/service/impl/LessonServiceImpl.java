@@ -7,6 +7,7 @@ import com.daoqonq1408.workshopbesql.entity.Lesson;
 import com.daoqonq1408.workshopbesql.exception.DuplicateObjectException;
 import com.daoqonq1408.workshopbesql.repository.GradeRepository;
 import com.daoqonq1408.workshopbesql.repository.LessonRepository;
+import com.daoqonq1408.workshopbesql.service.GradeService;
 import com.daoqonq1408.workshopbesql.service.LessonService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,88 +20,76 @@ import java.util.List;
 public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
-    private final GradeRepository gradeRepository;
+    private final GradeService gradeService;
 
-    public LessonServiceImpl(LessonRepository lessonRepository, GradeRepository gradeRepository) {
+    public LessonServiceImpl(LessonRepository lessonRepository,
+                             GradeService gradeService) {
         this.lessonRepository = lessonRepository;
-        this.gradeRepository = gradeRepository;
+        this.gradeService = gradeService;
     }
 
     @Override
     public LessonResponse getLesson(long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new EntityNotFoundException("Can not find less with id: " + lessonId));
 
-        return LessonResponse.builder()
-                .id(lesson.getId())
-                .gradeId(lesson.getGrade().getId())
-                .title(lesson.getTitle())
-                .build();
+        Lesson lesson = findById(lessonId);
+
+        return lesson.toResponse();
     }
 
     @Override
     public List<LessonResponse> getAllLessons() {
         return lessonRepository.findAll().stream()
-                .map(lesson -> LessonResponse.builder()
-                        .id(lesson.getId())
-                        .gradeId(lesson.getGrade().getId())
-                        .title(lesson.getTitle())
-                        .build())
+                .map(Lesson::toResponse)
                 .toList();
     }
 
     @Override
     @Transactional
     public LessonResponse addLesson(LessonRequest lessonRequest) {
-        lessonRepository.findByTitle(lessonRequest.getTitle()).ifPresent(subject -> {
-            throw new DuplicateObjectException("Subject already exists with title: " + lessonRequest.getTitle());
-        });
+        checkTitleExist(lessonRequest.getTitle());
 
-        Lesson lesson = lessonRepository.save(new Lesson(lessonRequest.getTitle(),
-                gradeRepository.findById(lessonRequest.getGradeId())
-                        .orElseThrow(() -> new EntityNotFoundException("Can not find grade with id: " + lessonRequest.getGradeId()))));
+        Lesson lesson = lessonRepository.save(new Lesson(
+                lessonRequest.getTitle(),
+                gradeService.findById(lessonRequest.getGradeId()))
+        );
 
-        return LessonResponse.builder()
-                .id(lesson.getId())
-                .title(lesson.getTitle())
-                .gradeId(lesson.getGrade().getId())
-                .build();
+        return lesson.toResponse();
     }
 
     @Override
     @Transactional
     public LessonResponse updateLesson(long id, LessonRequest lessonRequest) {
-        Lesson lesson = lessonRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
+        Lesson lesson = findById(id);
 
-        Grade grade = gradeRepository.findById(lessonRequest.getGradeId())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Grade not found with id: " + lessonRequest.getGradeId()));
+        Grade grade = gradeService.findById(lessonRequest.getGradeId());
 
         lesson.setGrade(grade);
         lesson.setTitle(lessonRequest.getTitle());
 
         Lesson updatedLesson = lessonRepository.save(lesson);
 
-        return LessonResponse.builder()
-                .id(updatedLesson.getId())
-                .title(updatedLesson.getTitle())
-                .gradeId(updatedLesson.getGrade().getId())
-                .build();
+        return updatedLesson.toResponse();
     }
 
     @Override
     @Transactional
     public LessonResponse deleteLesson(long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + lessonId));
+        Lesson lesson = findById(lessonId);
 
         lessonRepository.delete(lesson);
 
-        return LessonResponse.builder()
-                .id(lesson.getId())
-                .title(lesson.getTitle())
-                .gradeId(lesson.getGrade().getId())
-                .build();
+        return lesson.toResponse();
+    }
+
+    @Override
+    public Lesson findById(long id) {
+        return lessonRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
+    }
+
+    public void checkTitleExist(String title) {
+        lessonRepository.findByTitle(title).ifPresent(subject -> {
+            throw new DuplicateObjectException("Subject already exists with title: " + title);
+        });
     }
 }

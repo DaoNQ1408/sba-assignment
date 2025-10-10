@@ -24,68 +24,57 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectResponse getSubject(long id) {
-        Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
-
-        return SubjectResponse.builder()
-                .id(subject.getId())
-                .name(subject.getName())
-                .build();
+        return findById(id).toResponse();
     }
 
     @Override
     public List<SubjectResponse> getAllSubjects() {
         return subjectRepository.findAll().stream()
-                .map(subject -> SubjectResponse.builder()
-                        .id(subject.getId())
-                        .name(subject.getName())
-                        .build())
+                .map(Subject::toResponse)
                 .toList();
     }
 
     @Override
     @Transactional
     public SubjectResponse addSubject(SubjectRequest request) {
-        subjectRepository.findByName(request.getName()).ifPresent(subject -> {
-            throw new DuplicateObjectException("Subject already exists with name: " + request.getName());
-        });
+        checkNameExist(request.getName());
 
         Subject subject = subjectRepository.save(new Subject(request.getName()));
-        return SubjectResponse.builder()
-                .id(subject.getId())
-                .name(subject.getName())
-                .build();
+
+        return subject.toResponse();
     }
 
 
     @Override
     @Transactional
     public SubjectResponse updateSubject(long id, SubjectRequest subjectRequest) {
-        Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
-        // update
+        Subject subject = findById(id);
+
         subject.setName(subjectRequest.getName());
         Subject updatedSubject = subjectRepository.save(subject);
 
-        return SubjectResponse.builder()
-                .id(updatedSubject.getId())
-                .name(updatedSubject.getName())
-                .build();
+        return updatedSubject.toResponse();
     }
 
     @Override
     @Transactional
     public SubjectResponse deleteSubject(long id) {
-        Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found with id: " + id));
-
-        SubjectResponse response = SubjectResponse.builder()
-                .id(subject.getId())
-                .name(subject.getName())
-                .build();
+        Subject subject = findById(id);
 
         subjectRepository.delete(subject);
 
-        return response;
+        return subject.toResponse();
+    }
+
+    @Override
+    public Subject findById(long id) {
+        return subjectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Subject not found with id: " + id));
+    }
+
+    public void checkNameExist(String name) {
+        subjectRepository.findByName(name).ifPresent(subject -> {
+            throw new DuplicateObjectException("Subject already exists with name: " + name);
+        });
     }
 }

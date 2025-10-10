@@ -7,6 +7,7 @@ import com.daoqonq1408.workshopbesql.entity.Subject;
 import com.daoqonq1408.workshopbesql.repository.GradeRepository;
 import com.daoqonq1408.workshopbesql.repository.SubjectRepository;
 import com.daoqonq1408.workshopbesql.service.GradeService;
+import com.daoqonq1408.workshopbesql.service.SubjectService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,87 +20,73 @@ public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
     private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
 
     public GradeServiceImpl(GradeRepository gradeRepository,
-                            SubjectRepository subjectRepository) {
+                            SubjectRepository subjectRepository,
+                            SubjectService subjectService) {
         this.gradeRepository = gradeRepository;
         this.subjectRepository = subjectRepository;
+        this.subjectService = subjectService;
     }
 
     @Override
     @Transactional
     public GradeResponse addGrade(GradeRequest gradeRequest) {
         // save new grade record
-        Grade grade = gradeRepository.save(new Grade(gradeRequest.getGrade(),
-                subjectRepository.findById(gradeRequest.getSubjectId())
-                        .orElseThrow(() -> new EntityNotFoundException("Can not find subject with id: " + gradeRequest.getSubjectId()))));
+        Grade grade = gradeRepository.save(new Grade(
+                gradeRequest.getGrade(),
+                subjectService.findById(gradeRequest.getSubjectId()))
+        );
 
-        return GradeResponse.builder()
-                .id(grade.getId())
-                .grade(grade.getGrade())
-                .subjectId(grade.getSubject().getId())
-                .build();
+        return grade.toResponse();
     }
 
     @Override
     @Transactional
     public GradeResponse updateGrade(long id, GradeRequest gradeRequest) {
-        Grade grade = gradeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Grade not found with id: " + id));
 
-        Subject subject = subjectRepository.findById(gradeRequest.getSubjectId())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Subject not found with id: " + gradeRequest.getSubjectId()));
+        Grade grade = findById(id);
+
+        Subject subject = subjectService.findById(gradeRequest.getSubjectId());
 
         grade.setGrade(gradeRequest.getGrade());
         grade.setSubject(subject);
 
         Grade updatedGrade = gradeRepository.save(grade);
 
-        return GradeResponse.builder()
-                .id(updatedGrade.getId())
-                .grade(updatedGrade.getGrade())
-                .subjectId(updatedGrade.getSubject().getId())
-                .build();
+        return updatedGrade.toResponse();
     }
 
     @Override
     @Transactional
     public GradeResponse deleteGrade(long id) {
-        Grade grade = gradeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Can not find grade with id: " + id));
 
-        GradeResponse gradeResponse = GradeResponse.builder()
-                .id(grade.getId())
-                .grade(grade.getGrade())
-                .subjectId(grade.getSubject().getId())
-                .build();
+        Grade grade = findById(id);
 
         gradeRepository.delete(grade);
 
-        return gradeResponse;
+        return grade.toResponse();
     }
 
     @Override
     public List<GradeResponse> getAllGrades() {
         return gradeRepository.findAll().stream()
-                .map(grade -> GradeResponse.builder()
-                        .id(grade.getId())
-                        .subjectId(grade.getSubject().getId())
-                        .grade(grade.getGrade())
-                        .build())
+                .map(Grade::toResponse)
                 .toList();
     }
 
     @Override
     public GradeResponse getGradeById(long id) {
-        Grade grade = gradeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Can not find grade with id: " + id));
 
-        return GradeResponse.builder()
-                .id(grade.getId())
-                .grade(grade.getGrade())
-                .subjectId(grade.getSubject().getId())
-                .build();
+        Grade grade = findById(id);
+
+        return grade.toResponse();
+    }
+
+    @Override
+    public Grade findById(long id) {
+        return gradeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Can not find grade with id: " + id));
     }
 }
