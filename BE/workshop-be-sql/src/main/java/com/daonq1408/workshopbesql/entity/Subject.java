@@ -23,15 +23,4 @@ public class Subject {
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
     private List<Grade> grades;
-
-    public Subject(String name) {
-        this.name = name;
-    }
-
-    public SubjectResponse toResponse() {
-        return SubjectResponse.builder()
-                .id(this.id)
-                .name(this.name)
-                .build();
-    }
 }

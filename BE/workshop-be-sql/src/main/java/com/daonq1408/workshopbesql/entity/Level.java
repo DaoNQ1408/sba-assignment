@@ -29,11 +29,4 @@ public class Level {
 
     @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
     private List<MatrixLesson> matrixLessons;
-
-    public LevelResponse toResponse() {
-        return LevelResponse.builder()
-                .id(this.id)
-                .name(this.name)
-                .build();
-    }
 }

@@ -2,6 +2,7 @@ package com.daonq1408.workshopbesql.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +23,8 @@ public class Option {
 
     @Column(name = "is_true", nullable = false)
     private boolean isTrue;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
 }

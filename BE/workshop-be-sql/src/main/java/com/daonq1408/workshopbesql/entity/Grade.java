@@ -30,17 +30,4 @@ public class Grade {
 
     @OneToMany(mappedBy = "grade", cascade = CascadeType.ALL)
     private List<Lesson> lessons;
-
-    public Grade(String grade, Subject subject) {
-        this.grade = grade;
-        this.subject = subject;
-    }
-
-    public GradeResponse toResponse() {
-        return GradeResponse.builder()
-                .id(this.id)
-                .grade(this.grade)
-                .subjectId(this.subject.getId())
-                .build();
-    }
 }
