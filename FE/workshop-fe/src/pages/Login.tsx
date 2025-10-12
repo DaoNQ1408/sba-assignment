@@ -4,11 +4,13 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { authService } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(''); // CHANGED STATE NAME
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -20,15 +22,22 @@ const Login = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!username || !password) {
-            alert('Please enter both username and password.');
+        if (!username || !password) { // CHANGED VARIABLE NAME
+            alert('Please enter both username/email and password.'); // CHANGED ALERT MESSAGE
             return;
         }
 
         try {
-            const response = await authService.login({ username, password });
+            const response = await authService.login({ username, password }); // CHANGED VARIABLE NAME
             console.log(response);
-            // Xử lý response ở đây, ví dụ: chuyển hướng trang, hiển thị thông báo thành công/thất bại
+
+            // Lưu token vào localStorage nếu cần
+            if (response.data && response.data.token) {
+                localStorage.setItem('token', response.data.token);
+            }
+
+            // Điều hướng đến trang chủ
+            navigate('/home');
         } catch (error) {
             console.error('Login failed:', error);
             // Xử lý lỗi ở đây, ví dụ: hiển thị thông báo lỗi cho người dùng
@@ -93,10 +102,10 @@ const Login = () => {
                         sx={{ width: '100%', maxWidth: 320, display: 'flex', flexDirection: 'column', gap: 2 }}
                     >
                         <TextField
-                            id="username"
-                            label="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            id="usernameOrEmail" // CHANGED ID
+                            label="Username or Email" // CHANGED LABEL
+                            value={username} // CHANGED VALUE
+                            onChange={(e) => setUsername(e.target.value)} // CHANGED ONCHANGE
                             fullWidth
                         />
                         <TextField

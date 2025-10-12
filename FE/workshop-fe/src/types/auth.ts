@@ -1,7 +1,15 @@
 export interface User {
     userId: number;
     username: string;
-    password: string;
+    password?: string; // Make password optional and exclude from response
+    role: {
+        roleId: number;
+        roleName: string;
+    };
+}
+
+export interface UserResponse {
+    users: User[];
 }
 
 export interface LoginRequest {
@@ -11,7 +19,6 @@ export interface LoginRequest {
 
 export interface LoginResponse {
     token: string;
-    user: User;
 }
 
 
