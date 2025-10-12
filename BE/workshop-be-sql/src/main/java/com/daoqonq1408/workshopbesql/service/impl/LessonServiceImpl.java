@@ -91,13 +91,19 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Lesson findById(long id) {
         return lessonRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Lesson not found with id: " +
+                                id)
+                );
     }
 
 
     public void checkTitleExist(String title) {
-        lessonRepository.findByTitle(title).ifPresent(subject -> {
-            throw new DuplicateObjectException("Subject already exists with title: " + title);
-        });
+        lessonRepository.findByTitle(title)
+                .ifPresent(subject -> {
+                    throw new DuplicateObjectException(
+                            "Subject already exists with title: " +
+                                    title);
+                });
     }
 }
