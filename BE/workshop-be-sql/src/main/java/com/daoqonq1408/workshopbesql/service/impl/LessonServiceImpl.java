@@ -5,11 +5,13 @@ import com.daoqonq1408.workshopbesql.dto.response.LessonResponse;
 import com.daoqonq1408.workshopbesql.entity.Grade;
 import com.daoqonq1408.workshopbesql.entity.Lesson;
 import com.daoqonq1408.workshopbesql.exception.DuplicateObjectException;
+import com.daoqonq1408.workshopbesql.mapper.LessonMapper;
 import com.daoqonq1408.workshopbesql.repository.GradeRepository;
 import com.daoqonq1408.workshopbesql.repository.LessonRepository;
 import com.daoqonq1408.workshopbesql.service.GradeService;
 import com.daoqonq1408.workshopbesql.service.LessonService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,35 +19,35 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
     private final GradeService gradeService;
+    private final LessonMapper lessonMapper;
 
-    public LessonServiceImpl(LessonRepository lessonRepository,
-                             GradeService gradeService) {
-        this.lessonRepository = lessonRepository;
-        this.gradeService = gradeService;
-    }
 
     @Override
     public LessonResponse getLesson(long lessonId) {
 
         Lesson lesson = findById(lessonId);
 
-        return lesson.toResponse();
+        return lessonMapper.toResponse(lesson);
     }
+
 
     @Override
     public List<LessonResponse> getAllLessons() {
         return lessonRepository.findAll().stream()
-                .map(Lesson::toResponse)
+                .map(lessonMapper::toResponse)
                 .toList();
     }
+
 
     @Override
     @Transactional
     public LessonResponse addLesson(LessonRequest lessonRequest) {
+
         checkTitleExist(lessonRequest.getTitle());
 
         Lesson lesson = lessonRepository.save(new Lesson(
@@ -53,12 +55,14 @@ public class LessonServiceImpl implements LessonService {
                 gradeService.findById(lessonRequest.getGradeId()))
         );
 
-        return lesson.toResponse();
+        return lessonMapper.toResponse(lesson);
     }
+
 
     @Override
     @Transactional
     public LessonResponse updateLesson(long id, LessonRequest lessonRequest) {
+
         Lesson lesson = findById(id);
 
         Grade grade = gradeService.findById(lessonRequest.getGradeId());
@@ -68,24 +72,28 @@ public class LessonServiceImpl implements LessonService {
 
         Lesson updatedLesson = lessonRepository.save(lesson);
 
-        return updatedLesson.toResponse();
+        return lessonMapper.toResponse(updatedLesson);
     }
+
 
     @Override
     @Transactional
     public LessonResponse deleteLesson(long lessonId) {
+
         Lesson lesson = findById(lessonId);
 
         lessonRepository.delete(lesson);
 
-        return lesson.toResponse();
+        return lessonMapper.toResponse(lesson);
     }
+
 
     @Override
     public Lesson findById(long id) {
         return lessonRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
     }
+
 
     public void checkTitleExist(String title) {
         lessonRepository.findByTitle(title).ifPresent(subject -> {

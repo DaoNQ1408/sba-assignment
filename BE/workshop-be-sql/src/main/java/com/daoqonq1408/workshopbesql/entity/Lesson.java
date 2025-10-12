@@ -3,6 +3,7 @@ package com.daoqonq1408.workshopbesql.entity;
 import com.daoqonq1408.workshopbesql.dto.response.LessonResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

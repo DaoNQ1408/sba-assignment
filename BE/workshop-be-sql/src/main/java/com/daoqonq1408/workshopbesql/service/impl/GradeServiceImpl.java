@@ -4,11 +4,13 @@ import com.daoqonq1408.workshopbesql.dto.request.GradeRequest;
 import com.daoqonq1408.workshopbesql.dto.response.GradeResponse;
 import com.daoqonq1408.workshopbesql.entity.Grade;
 import com.daoqonq1408.workshopbesql.entity.Subject;
+import com.daoqonq1408.workshopbesql.mapper.GradeMapper;
 import com.daoqonq1408.workshopbesql.repository.GradeRepository;
 import com.daoqonq1408.workshopbesql.repository.SubjectRepository;
 import com.daoqonq1408.workshopbesql.service.GradeService;
 import com.daoqonq1408.workshopbesql.service.SubjectService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,19 +18,13 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
-    private final SubjectRepository subjectRepository;
     private final SubjectService subjectService;
+    private final GradeMapper gradeMapper;
 
-    public GradeServiceImpl(GradeRepository gradeRepository,
-                            SubjectRepository subjectRepository,
-                            SubjectService subjectService) {
-        this.gradeRepository = gradeRepository;
-        this.subjectRepository = subjectRepository;
-        this.subjectService = subjectService;
-    }
 
     @Override
     @Transactional
@@ -39,8 +35,9 @@ public class GradeServiceImpl implements GradeService {
                 subjectService.findById(gradeRequest.getSubjectId()))
         );
 
-        return grade.toResponse();
+        return gradeMapper.toResponse(grade);
     }
+
 
     @Override
     @Transactional
@@ -55,8 +52,9 @@ public class GradeServiceImpl implements GradeService {
 
         Grade updatedGrade = gradeRepository.save(grade);
 
-        return updatedGrade.toResponse();
+        return gradeMapper.toResponse(updatedGrade);
     }
+
 
     @Override
     @Transactional
@@ -66,28 +64,30 @@ public class GradeServiceImpl implements GradeService {
 
         gradeRepository.delete(grade);
 
-        return grade.toResponse();
+        return gradeMapper.toResponse(grade);
     }
+
 
     @Override
     public List<GradeResponse> getAllGrades() {
         return gradeRepository.findAll().stream()
-                .map(Grade::toResponse)
+                .map(gradeMapper::toResponse)
                 .toList();
     }
+
 
     @Override
     public GradeResponse getGradeById(long id) {
 
         Grade grade = findById(id);
 
-        return grade.toResponse();
+        return gradeMapper.toResponse(grade);
     }
+
 
     @Override
     public Grade findById(long id) {
         return gradeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can not find grade with id: " + id));
-        //hello
     }
 }

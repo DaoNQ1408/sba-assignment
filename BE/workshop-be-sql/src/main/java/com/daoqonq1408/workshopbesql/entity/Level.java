@@ -4,6 +4,7 @@ import com.daoqonq1408.workshopbesql.dto.response.LessonResponse;
 import com.daoqonq1408.workshopbesql.dto.response.LevelResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
