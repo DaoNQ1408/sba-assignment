@@ -15,6 +15,7 @@ public class AccountMapper {
                 .build();
     }
 
+
     public Account toEntity(AccountRequest accountRequest) {
         return Account.builder()
                 .mail(accountRequest.getMail())

@@ -32,4 +32,7 @@ public class Matrix {
 
     @OneToMany(mappedBy = "matrix", cascade = CascadeType.ALL)
     private List<MatrixLesson> matrixLessons;
+
+    @OneToMany(mappedBy = "matrix", cascade = CascadeType.ALL)
+    private List<Exam> exams;
 }
