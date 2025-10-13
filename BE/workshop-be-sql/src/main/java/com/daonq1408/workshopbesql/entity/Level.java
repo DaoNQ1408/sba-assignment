@@ -1,6 +1,5 @@
 package com.daonq1408.workshopbesql.entity;
 
-import com.daonq1408.workshopbesql.dto.response.LevelResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
