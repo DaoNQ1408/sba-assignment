@@ -17,15 +17,18 @@ public class QuestionTypeController {
 
     private final QuestionTypeService questionTypeService;
 
+
     @GetMapping("")
     public ResponseEntity<List<QuestionTypeResponse>> getAllQuestionTypes() {
         return ResponseEntity.ok(questionTypeService.findAll());
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<QuestionTypeResponse> getQuestionTypeById(@PathVariable long id) {
         return ResponseEntity.ok(questionTypeService.getById(id));
     }
+
 
     @PostMapping
     public ResponseEntity<QuestionTypeResponse> createQuestionType(@RequestBody QuestionTypeRequest request) {
@@ -33,11 +36,13 @@ public class QuestionTypeController {
         return new ResponseEntity<>(createdQuestionType, HttpStatus.CREATED);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<QuestionTypeResponse> updateQuestionType(@PathVariable long id,
                                                                    @RequestBody QuestionTypeRequest request) {
         return ResponseEntity.ok(questionTypeService.update(id, request));
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<QuestionTypeResponse> deleteQuestionType(@PathVariable long id) {

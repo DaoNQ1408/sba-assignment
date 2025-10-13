@@ -24,12 +24,10 @@ public class LevelController {
     }
 
 
-
     @GetMapping("/{id}")
     public ResponseEntity<LevelResponse> getLevelById(@PathVariable long id) {
         return ResponseEntity.ok(levelService.getLevelById(id));
     }
-
 
 
     @PostMapping("")

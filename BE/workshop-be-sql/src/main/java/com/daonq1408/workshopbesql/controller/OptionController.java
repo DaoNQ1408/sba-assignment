@@ -17,15 +17,18 @@ public class OptionController {
 
     private final OptionService optionService;
 
+
     @GetMapping
     public ResponseEntity<List<OptionResponse>> getAllOptions() {
         return ResponseEntity.ok(optionService.getAllOptions());
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<OptionResponse> getOptionById(@PathVariable long id) {
         return ResponseEntity.ok(optionService.getById(id));
     }
+
 
     @PostMapping
     public ResponseEntity<OptionResponse> createOption(@RequestBody OptionRequest request) {
@@ -33,11 +36,13 @@ public class OptionController {
         return new ResponseEntity<>(createdOption, HttpStatus.CREATED);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<OptionResponse> updateOption(@PathVariable long id,
                                                        @RequestBody OptionRequest request) {
         return ResponseEntity.ok(optionService.update(id, request));
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<OptionResponse> deleteOption(@PathVariable long id) {
