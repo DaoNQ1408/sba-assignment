@@ -4,9 +4,9 @@ import com.daonq1408.workshopbesql.dto.request.GradeRequest;
 import com.daonq1408.workshopbesql.dto.response.GradeResponse;
 import com.daonq1408.workshopbesql.entity.Grade;
 import com.daonq1408.workshopbesql.service.SubjectService;
-import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +20,13 @@ public interface GradeMapper {
     GradeResponse toResponse(Grade grade);
 
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "subjectId", target = "subject")
     Grade toEntity(GradeRequest gradeRequest);
+
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "subjectId", target = "subject")
+    void updateEntityFromRequest(@MappingTarget Grade grade,
+                                 GradeRequest gradeRequest);
 }

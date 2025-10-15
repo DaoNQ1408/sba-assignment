@@ -5,9 +5,9 @@ import com.daonq1408.workshopbesql.dto.response.ExamResponse;
 import com.daonq1408.workshopbesql.entity.Exam;
 
 import com.daonq1408.workshopbesql.service.MatrixService;
-import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +21,13 @@ public interface ExamMapper {
     ExamResponse toResponse(Exam exam);
 
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "matrixId", target = "matrix")
     Exam toEntity(ExamRequest examRequest);
+
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "matrixId", target = "matrix")
+    void updateEntityFromRequest(@MappingTarget Exam exam,
+                                 ExamRequest examRequest);
 }

@@ -41,32 +41,33 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountResponse save(AccountRequest accountRequest) {
+    public AccountResponse saveAccount(AccountRequest accountRequest) {
 
         endIfMailExists(accountRequest.getMail());
 
         Account account = accountMapper.toEntity(accountRequest);
+        Account savedAccount = accountRepository.save(account);
 
-        return accountMapper.toResponse(accountRepository.save(account));
+        return accountMapper.toResponse(savedAccount);
     }
 
 
     @Override
     @Transactional
-    public AccountResponse update(long accountId, AccountRequest accountRequest) {
+    public AccountResponse updateAccount(long accountId, AccountRequest accountRequest) {
 
         Account account = findById(accountId);
 
-        account.setMail(accountRequest.getMail());
-        account.setPassword(accountRequest.getPassword());
+        accountMapper.updateEntityFromRequest(account, accountRequest);
+        Account updatedAccount = accountRepository.save(account);
 
-        return accountMapper.toResponse(accountRepository.save(account));
+        return accountMapper.toResponse(accountRepository.save(updatedAccount));
     }
 
 
     @Override
     @Transactional
-    public AccountResponse delete(long accountId) {
+    public AccountResponse deleteAccount(long accountId) {
 
         Account account = findById(accountId);
 

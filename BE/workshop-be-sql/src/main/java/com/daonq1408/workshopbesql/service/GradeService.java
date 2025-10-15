@@ -7,7 +7,7 @@ import com.daonq1408.workshopbesql.entity.Grade;
 import java.util.List;
 
 public interface GradeService {
-    GradeResponse addGrade(GradeRequest gradeRequest);
+    GradeResponse saveGrade(GradeRequest gradeRequest);
     GradeResponse updateGrade(long id, GradeRequest gradeRequest);
     GradeResponse deleteGrade(long id);
     List<GradeResponse> getAllGrades();

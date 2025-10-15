@@ -32,7 +32,7 @@ public class ExamController {
 
     @PostMapping
     public ResponseEntity<ExamResponse> createExam(@RequestBody ExamRequest request) {
-        ExamResponse createdExam = examService.save(request);
+        ExamResponse createdExam = examService.saveExam(request);
         return new ResponseEntity<>(createdExam, HttpStatus.CREATED);
     }
 
@@ -40,12 +40,12 @@ public class ExamController {
     @PutMapping("/{id}")
     public ResponseEntity<ExamResponse> updateExam(@PathVariable long id,
                                                    @RequestBody ExamRequest request) {
-        return ResponseEntity.ok(examService.update(id, request));
+        return ResponseEntity.ok(examService.updateExam(id, request));
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ExamResponse> deleteExam(@PathVariable long id) {
-        return ResponseEntity.ok(examService.delete(id));
+        return ResponseEntity.ok(examService.deleteExam(id));
     }
 }

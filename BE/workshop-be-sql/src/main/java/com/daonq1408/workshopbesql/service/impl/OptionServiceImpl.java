@@ -6,7 +6,6 @@ import com.daonq1408.workshopbesql.entity.Option;
 import com.daonq1408.workshopbesql.mapper.OptionMapper;
 import com.daonq1408.workshopbesql.repository.OptionRepository;
 import com.daonq1408.workshopbesql.service.OptionService;
-import com.daonq1408.workshopbesql.service.QuestionService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class OptionServiceImpl implements OptionService {
 
     private final OptionRepository optionRepository;
     private final OptionMapper optionMapper;
-    private final QuestionService questionService;
 
 
     @Override
@@ -52,31 +50,31 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public OptionResponse save(OptionRequest optionRequest) {
+    public OptionResponse saveOption(OptionRequest optionRequest) {
 
         Option option = optionMapper.toEntity(optionRequest);
+        Option savedOption = optionRepository.save(option);
 
-        return optionMapper.toResponse(optionRepository.save(option));
+        return optionMapper.toResponse(savedOption);
     }
 
 
     @Override
     @Transactional
-    public OptionResponse update(long optionId, OptionRequest optionRequest) {
+    public OptionResponse updateOption(long optionId, OptionRequest optionRequest) {
 
         Option option = findById(optionId);
 
-        option.setOption(optionRequest.getOption());
-        option.setTrue(optionRequest.isTrue());
-        option.setQuestion(questionService.findById(optionRequest.getQuestionId()));
+        optionMapper.updateEntityFromRequest(option, optionRequest);
+        Option updatedOption = optionRepository.save(option);
 
-        return optionMapper.toResponse(optionRepository.save(option));
+        return optionMapper.toResponse(updatedOption);
     }
 
 
     @Override
     @Transactional
-    public OptionResponse delete(long optionId) {
+    public OptionResponse deleteOption(long optionId) {
 
         Option option = findById(optionId);
 

@@ -32,10 +32,12 @@ public class ExamServiceImpl implements ExamService {
                 );
     }
 
+
     @Override
     public ExamResponse getById(long examId) {
         return examMapper.toResponse(findById(examId));
     }
+
 
     @Override
     public List<ExamResponse> getAll() {
@@ -46,32 +48,36 @@ public class ExamServiceImpl implements ExamService {
                 .toList();
     }
 
+
     @Override
     @Transactional
-    public ExamResponse save(ExamRequest examRequest) {
+    public ExamResponse saveExam(ExamRequest examRequest) {
 
         endIfExamTitleExists(examRequest.getTitle());
 
         Exam exam = examMapper.toEntity(examRequest);
+        Exam savedExam = examRepository.save(exam);
 
-        return examMapper.toResponse(examRepository.save(exam));
+        return examMapper.toResponse(savedExam);
     }
+
 
     @Override
     @Transactional
-    public ExamResponse update(long examId, ExamRequest examRequest) {
+    public ExamResponse updateExam(long examId, ExamRequest examRequest) {
 
         Exam exam = findById(examId);
 
-        exam.setTitle(examRequest.getTitle());
-        exam.setDurationMinutes(examRequest.getDurationMinutes());
+        examMapper.updateEntityFromRequest(exam, examRequest);
+        Exam updatedExam = examRepository.save(exam);
 
-        return examMapper.toResponse(examRepository.save(exam));
+        return examMapper.toResponse(updatedExam);
     }
+
 
     @Override
     @Transactional
-    public ExamResponse delete(long examId) {
+    public ExamResponse deleteExam(long examId) {
 
         Exam exam = findById(examId);
 
@@ -79,6 +85,7 @@ public class ExamServiceImpl implements ExamService {
 
         return examMapper.toResponse(exam);
     }
+
 
     public void endIfExamTitleExists(String examTitle) {
         examRepository.findByTitle(examTitle)

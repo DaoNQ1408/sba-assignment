@@ -66,8 +66,9 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
         endIfExistQuestionTypeName(questionTypeRequest.getName());
 
         QuestionType questionType = questionTypeMapper.toEntity(questionTypeRequest);
+        QuestionType savedQuestionType = questionTypeRepository.save(questionType);
 
-        return questionTypeMapper.toResponse(questionTypeRepository.save(questionType));
+        return questionTypeMapper.toResponse(savedQuestionType);
     }
 
 
@@ -77,9 +78,10 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
 
         QuestionType questionType = findById(questionTypeId);
 
-        questionType.setName(questionTypeRequest.getName());
+        questionTypeMapper.updateEntityFromRequest(questionType, questionTypeRequest);
+        QuestionType updatedQuestionType = questionTypeRepository.save(questionType);
 
-        return questionTypeMapper.toResponse(questionTypeRepository.save(questionType));
+        return questionTypeMapper.toResponse(updatedQuestionType);
     }
 
 

@@ -35,7 +35,7 @@ public class LessonController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<LessonResponse>> addLesson(@Valid @RequestBody LessonRequest request) {
-        LessonResponse response = lessonService.addLesson(request);
+        LessonResponse response = lessonService.saveLesson(request);
         return ResponseEntity.ok(ApiResponse.success(response, "Lesson added successfully"));
     }
 

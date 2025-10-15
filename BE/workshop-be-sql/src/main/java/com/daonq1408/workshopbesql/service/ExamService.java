@@ -10,7 +10,7 @@ public interface ExamService {
     Exam findById(long examId);
     ExamResponse getById(long examId);
     List<ExamResponse> getAll();
-    ExamResponse save(ExamRequest examRequest);
-    ExamResponse update(long examId, ExamRequest examRequest);
-    ExamResponse delete(long examId);
+    ExamResponse saveExam(ExamRequest examRequest);
+    ExamResponse updateExam(long examId, ExamRequest examRequest);
+    ExamResponse deleteExam(long examId);
 }

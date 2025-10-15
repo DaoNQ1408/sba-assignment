@@ -2,12 +2,10 @@ package com.daonq1408.workshopbesql.service.impl;
 
 import com.daonq1408.workshopbesql.dto.request.LessonRequest;
 import com.daonq1408.workshopbesql.dto.response.LessonResponse;
-import com.daonq1408.workshopbesql.entity.Grade;
 import com.daonq1408.workshopbesql.entity.Lesson;
 import com.daonq1408.workshopbesql.exception.DuplicateObjectException;
 import com.daonq1408.workshopbesql.mapper.LessonMapper;
 import com.daonq1408.workshopbesql.repository.LessonRepository;
-import com.daonq1408.workshopbesql.service.GradeService;
 import com.daonq1408.workshopbesql.service.LessonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +20,6 @@ import java.util.List;
 public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
-    private final GradeService gradeService;
     private final LessonMapper lessonMapper;
 
 
@@ -45,13 +42,14 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public LessonResponse addLesson(LessonRequest lessonRequest) {
+    public LessonResponse saveLesson(LessonRequest lessonRequest) {
 
         endIfLessonTitleExist(lessonRequest.getTitle());
 
-        Lesson lesson = lessonRepository.save(lessonMapper.toEntity(lessonRequest));
+        Lesson lesson = lessonMapper.toEntity(lessonRequest);
+        Lesson savedLesson = lessonRepository.save(lesson);
 
-        return lessonMapper.toResponse(lesson);
+        return lessonMapper.toResponse(savedLesson);
     }
 
 
@@ -61,11 +59,7 @@ public class LessonServiceImpl implements LessonService {
 
         Lesson lesson = findById(id);
 
-        Grade grade = gradeService.findById(lessonRequest.getGradeId());
-
-        lesson.setGrade(grade);
-        lesson.setTitle(lessonRequest.getTitle());
-
+        lessonMapper.updateEntityFromRequest(lesson, lessonRequest);
         Lesson updatedLesson = lessonRepository.save(lesson);
 
         return lessonMapper.toResponse(updatedLesson);

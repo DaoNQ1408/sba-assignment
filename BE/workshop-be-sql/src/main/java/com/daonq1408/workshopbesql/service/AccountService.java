@@ -11,7 +11,7 @@ public interface AccountService {
     Account findByMail(String mail);
     AccountResponse getById(long accountId);
     List<AccountResponse> getAll();
-    AccountResponse save(AccountRequest accountRequest);
-    AccountResponse update(long accountId, AccountRequest accountRequest);
-    AccountResponse delete(long accountId);
+    AccountResponse saveAccount(AccountRequest accountRequest);
+    AccountResponse updateAccount(long accountId, AccountRequest accountRequest);
+    AccountResponse deleteAccount(long accountId);
 }

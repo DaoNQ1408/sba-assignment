@@ -3,11 +3,9 @@ package com.daonq1408.workshopbesql.service.impl;
 import com.daonq1408.workshopbesql.dto.request.GradeRequest;
 import com.daonq1408.workshopbesql.dto.response.GradeResponse;
 import com.daonq1408.workshopbesql.entity.Grade;
-import com.daonq1408.workshopbesql.entity.Subject;
 import com.daonq1408.workshopbesql.mapper.GradeMapper;
 import com.daonq1408.workshopbesql.repository.GradeRepository;
 import com.daonq1408.workshopbesql.service.GradeService;
-import com.daonq1408.workshopbesql.service.SubjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,17 +19,17 @@ import java.util.List;
 public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
-    private final SubjectService subjectService;
     private final GradeMapper gradeMapper;
 
 
     @Override
     @Transactional
-    public GradeResponse addGrade(GradeRequest gradeRequest) {
+    public GradeResponse saveGrade(GradeRequest gradeRequest) {
 
-        Grade grade = gradeRepository.save(gradeMapper.toEntity(gradeRequest));
+        Grade grade = gradeMapper.toEntity(gradeRequest);
+        Grade savedGrade = gradeRepository.save(grade);
 
-        return gradeMapper.toResponse(grade);
+        return gradeMapper.toResponse(savedGrade);
     }
 
 
@@ -41,11 +39,7 @@ public class GradeServiceImpl implements GradeService {
 
         Grade grade = findById(id);
 
-        Subject subject = subjectService.findById(gradeRequest.getSubjectId());
-
-        grade.setGrade(gradeRequest.getGrade());
-        grade.setSubject(subject);
-
+        gradeMapper.updateEntityFromRequest(grade, gradeRequest);
         Grade updatedGrade = gradeRepository.save(grade);
 
         return gradeMapper.toResponse(updatedGrade);

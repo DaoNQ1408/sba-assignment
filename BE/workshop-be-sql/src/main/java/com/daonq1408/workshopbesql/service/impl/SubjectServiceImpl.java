@@ -41,11 +41,12 @@ public class SubjectServiceImpl implements SubjectService {
     @Transactional
     public SubjectResponse addSubject(SubjectRequest request) {
 
-        checkNameExist(request.getName());
+        endIfNameExists(request.getName());
 
-        Subject subject = subjectRepository.save(subjectMapper.toEntity(request));
+        Subject subject = subjectMapper.toEntity(request);
+        Subject savedSubject = subjectRepository.save(subject);
 
-        return subjectMapper.toResponse(subject);
+        return subjectMapper.toResponse(savedSubject);
     }
 
 
@@ -55,7 +56,7 @@ public class SubjectServiceImpl implements SubjectService {
 
         Subject subject = findById(id);
 
-        subject.setName(subjectRequest.getName());
+        subjectMapper.updateEntityFromRequest(subject, subjectRequest);
         Subject updatedSubject = subjectRepository.save(subject);
 
         return subjectMapper.toResponse(updatedSubject);
@@ -84,7 +85,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
 
-    public void checkNameExist(String name) {
+    public void endIfNameExists(String name) {
         subjectRepository.findByName(name)
                 .ifPresent(subject -> {
                     throw new DuplicateObjectException(

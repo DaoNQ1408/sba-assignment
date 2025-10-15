@@ -9,7 +9,7 @@ import java.util.List;
 public interface LessonService {
     LessonResponse getLesson(long lessonId);
     List<LessonResponse> getAllLessons();
-    LessonResponse addLesson(LessonRequest lessonRequest);
+    LessonResponse saveLesson(LessonRequest lessonRequest);
     LessonResponse updateLesson(long id, LessonRequest lessonRequest);
     LessonResponse deleteLesson(long lessonId);
     Lesson findById(long id);

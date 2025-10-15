@@ -41,11 +41,12 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     @Transactional
-    public LevelResponse addLevel(LevelRequest levelRequest) {
+    public LevelResponse saveLevel(LevelRequest levelRequest) {
 
         Level level = levelMapper.toEntity(levelRequest);
+        Level savedLevel = levelRepository.save(level);
 
-        return levelMapper.toResponse(levelRepository.save(level));
+        return levelMapper.toResponse(savedLevel);
     }
 
 
@@ -57,9 +58,10 @@ public class LevelServiceImpl implements LevelService {
 
         Level level = findById(id);
 
-        level.setName(levelRequest.getName());
+        levelMapper.updateEntityFromRequest(level, levelRequest);
+        Level updatedLevel = levelRepository.save(level);
 
-        return levelMapper.toResponse(levelRepository.save(level));
+        return levelMapper.toResponse(updatedLevel);
     }
 
 

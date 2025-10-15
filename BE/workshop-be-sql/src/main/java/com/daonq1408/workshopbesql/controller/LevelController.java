@@ -32,7 +32,7 @@ public class LevelController {
 
     @PostMapping("")
     public ResponseEntity<LevelResponse> addLevel(@RequestBody LevelRequest levelRequest) {
-        return new ResponseEntity<>(levelService.addLevel(levelRequest),
+        return new ResponseEntity<>(levelService.saveLevel(levelRequest),
                 HttpStatus.CREATED);
     }
 

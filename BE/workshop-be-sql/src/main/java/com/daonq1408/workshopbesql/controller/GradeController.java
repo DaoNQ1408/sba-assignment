@@ -35,7 +35,7 @@ public class GradeController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<GradeResponse>> addGrade(@Valid @RequestBody GradeRequest request) {
-        GradeResponse grade = gradeService.addGrade(request);
+        GradeResponse grade = gradeService.saveGrade(request);
         return ResponseEntity.ok(ApiResponse.success(grade, "Grade added successfully"));
     }
 

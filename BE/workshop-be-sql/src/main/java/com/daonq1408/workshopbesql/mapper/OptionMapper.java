@@ -4,9 +4,9 @@ import com.daonq1408.workshopbesql.dto.request.OptionRequest;
 import com.daonq1408.workshopbesql.dto.response.OptionResponse;
 import com.daonq1408.workshopbesql.entity.Option;
 import com.daonq1408.workshopbesql.service.QuestionService;
-import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +20,13 @@ public interface OptionMapper {
     OptionResponse toResponse(Option option);
 
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "questionId", target = "question")
     Option toEntity(OptionRequest optionRequest);
+
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "questionId", target = "question")
+    void updateEntityFromRequest(@MappingTarget Option option,
+                                 OptionRequest optionRequest);
 }

@@ -4,6 +4,8 @@ import com.daonq1408.workshopbesql.dto.request.LevelRequest;
 import com.daonq1408.workshopbesql.dto.response.LevelResponse;
 import com.daonq1408.workshopbesql.entity.Level;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,5 +15,11 @@ public interface LevelMapper {
     LevelResponse toResponse(Level level);
 
 
+    @Mapping(target = "id", ignore = true)
     Level toEntity(LevelRequest levelRequest);
+
+
+    @Mapping(target = "id", ignore = true)
+    void updateEntityFromRequest(@MappingTarget Level level,
+                                          LevelRequest levelRequest);
 }

@@ -32,7 +32,7 @@ public class OptionController {
 
     @PostMapping
     public ResponseEntity<OptionResponse> createOption(@RequestBody OptionRequest request) {
-        OptionResponse createdOption = optionService.save(request);
+        OptionResponse createdOption = optionService.saveOption(request);
         return new ResponseEntity<>(createdOption, HttpStatus.CREATED);
     }
 
@@ -40,12 +40,12 @@ public class OptionController {
     @PutMapping("/{id}")
     public ResponseEntity<OptionResponse> updateOption(@PathVariable long id,
                                                        @RequestBody OptionRequest request) {
-        return ResponseEntity.ok(optionService.update(id, request));
+        return ResponseEntity.ok(optionService.updateOption(id, request));
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<OptionResponse> deleteOption(@PathVariable long id) {
-        return ResponseEntity.ok(optionService.delete(id));
+        return ResponseEntity.ok(optionService.deleteOption(id));
     }
 }
