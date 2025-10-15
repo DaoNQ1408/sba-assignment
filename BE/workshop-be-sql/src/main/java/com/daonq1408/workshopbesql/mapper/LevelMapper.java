@@ -3,22 +3,15 @@ package com.daonq1408.workshopbesql.mapper;
 import com.daonq1408.workshopbesql.dto.request.LevelRequest;
 import com.daonq1408.workshopbesql.dto.response.LevelResponse;
 import com.daonq1408.workshopbesql.entity.Level;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LevelMapper {
+@Mapper(componentModel = "spring")
+public interface LevelMapper {
 
-    public LevelResponse toResponse(Level level) {
-        return LevelResponse.builder()
-                .id(level.getId())
-                .name(level.getName())
-                .build();
-    }
+    LevelResponse toResponse(Level level);
 
 
-    public Level toEntity(LevelRequest levelRequest) {
-        return Level.builder()
-                .name(levelRequest.getName())
-                .build();
-    }
+    Level toEntity(LevelRequest levelRequest);
 }

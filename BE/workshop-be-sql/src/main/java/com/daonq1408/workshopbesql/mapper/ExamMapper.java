@@ -6,30 +6,21 @@ import com.daonq1408.workshopbesql.entity.Exam;
 
 import com.daonq1408.workshopbesql.service.MatrixService;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class ExamMapper {
+@Mapper(componentModel = "spring",
+        uses = {MatrixService.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface ExamMapper {
 
-    private final MatrixService matrixService;
-
-
-    public ExamResponse toResponse(Exam exam) {
-        return ExamResponse.builder()
-                .id(exam.getId())
-                .title(exam.getTitle())
-                .durationMinutes(exam.getDurationMinutes())
-                .matrixId(exam.getMatrix().getId())
-                .build();
-    }
+    @Mapping(source = "matrix.id", target = "matrixId")
+    ExamResponse toResponse(Exam exam);
 
 
-    public Exam toEntity(ExamRequest examRequest) {
-        return Exam.builder()
-                .title(examRequest.getTitle())
-                .durationMinutes(examRequest.getDurationMinutes())
-                .matrix(matrixService.findById(examRequest.getMatrixId()))
-                .build();
-    }
+    @Mapping(source = "matrixId", target = "matrix")
+    Exam toEntity(ExamRequest examRequest);
 }

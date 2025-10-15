@@ -5,30 +5,21 @@ import com.daonq1408.workshopbesql.dto.response.OptionResponse;
 import com.daonq1408.workshopbesql.entity.Option;
 import com.daonq1408.workshopbesql.service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class OptionMapper {
+@Mapper(componentModel = "spring",
+        uses = {QuestionService.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface OptionMapper {
 
-    private final QuestionService questionService;
-
-
-    public OptionResponse toResponse(Option option) {
-        return OptionResponse.builder()
-                .optionId(option.getId())
-                .option(option.getOption())
-                .isTrue(option.isTrue())
-                .questionId(option.getQuestion().getId())
-                .build();
-    }
+    @Mapping(source = "question.id", target = "questionId")
+    OptionResponse toResponse(Option option);
 
 
-    public Option toEntity(OptionRequest optionRequest) {
-        return Option.builder()
-                .option(optionRequest.getOption())
-                .isTrue(optionRequest.isTrue())
-                .question(questionService.findById(optionRequest.getQuestionId()))
-                .build();
-    }
+    @Mapping(source = "questionId", target = "question")
+    Option toEntity(OptionRequest optionRequest);
 }

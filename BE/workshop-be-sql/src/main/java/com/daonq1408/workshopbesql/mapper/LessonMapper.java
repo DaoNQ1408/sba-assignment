@@ -5,28 +5,21 @@ import com.daonq1408.workshopbesql.dto.response.LessonResponse;
 import com.daonq1408.workshopbesql.entity.Lesson;
 import com.daonq1408.workshopbesql.service.GradeService;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class LessonMapper {
+@Mapper(componentModel = "spring",
+        uses = {GradeService.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface LessonMapper {
 
-    private final GradeService gradeService;
-
-
-    public LessonResponse toResponse(Lesson lesson) {
-        return LessonResponse.builder()
-                .id(lesson.getId())
-                .title(lesson.getTitle())
-                .gradeId(lesson.getGrade().getId())
-                .build();
-    }
+    @Mapping(source = "grade.id", target = "gradeId")
+    LessonResponse toResponse(Lesson lesson);
 
 
-    public Lesson toEntity(LessonRequest lessonRequest) {
-        return Lesson.builder()
-                .title(lessonRequest.getTitle())
-                .grade(gradeService.findById(lessonRequest.getGradeId()))
-                .build();
-    }
+    @Mapping(source = "gradeId", target = "grade")
+    Lesson toEntity(LessonRequest lessonRequest);
 }

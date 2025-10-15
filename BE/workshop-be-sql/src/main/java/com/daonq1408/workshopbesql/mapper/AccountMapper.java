@@ -3,23 +3,15 @@ package com.daonq1408.workshopbesql.mapper;
 import com.daonq1408.workshopbesql.dto.request.AccountRequest;
 import com.daonq1408.workshopbesql.dto.response.AccountResponse;
 import com.daonq1408.workshopbesql.entity.Account;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AccountMapper {
+@Mapper(componentModel = "spring")
+public interface AccountMapper {
 
-    public AccountResponse toResponse(Account account) {
-        return AccountResponse.builder()
-                .id(account.getId())
-                .mail(account.getMail())
-                .build();
-    }
+    AccountResponse toResponse(Account account);
 
 
-    public Account toEntity(AccountRequest accountRequest) {
-        return Account.builder()
-                .mail(accountRequest.getMail())
-                .password(accountRequest.getPassword())
-                .build();
-    }
+    Account toEntity(AccountRequest accountRequest);
 }
