@@ -20,16 +20,16 @@ import org.springframework.stereotype.Component;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionMapper {
 
-    @Mapping(source = "lesson.id", target = "lessonId")
-    @Mapping(source = "level.id", target = "levelId")
-    @Mapping(source = "questionType.id", target = "questionTypeId")
+    @Mapping(target = "lessonId", source = "lesson.id")
+    @Mapping(target = "levelId", source = "level.id")
+    @Mapping(target = "questionTypeId", source = "questionType.id")
     QuestionResponse toResponse(Question question);
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "lessonId", target = "lesson")
-    @Mapping(source = "levelId", target = "level")
-    @Mapping(source = "questionTypeId", target = "questionType")
+    @Mapping(target = "lesson", source = "lessonId")
+    @Mapping(target = "level", source = "levelId")
+    @Mapping(target = "questionType", source = "questionTypeId")
     Question toEntity(QuestionRequest questionRequest);
 
 

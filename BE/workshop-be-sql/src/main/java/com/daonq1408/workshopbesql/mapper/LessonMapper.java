@@ -21,12 +21,12 @@ public interface LessonMapper {
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "gradeId", target = "grade")
+    @Mapping(target = "grade", source = "gradeId")
     Lesson toEntity(LessonRequest lessonRequest);
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "gradeId", target = "grade")
+    @Mapping(target = "grade", source = "gradeId")
     void updateEntityFromRequest(@MappingTarget Lesson lesson,
                                  LessonRequest lessonRequest);
 }
