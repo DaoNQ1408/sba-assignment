@@ -18,12 +18,10 @@ public class ExamQuestion {
     private long id;
 
     @ManyToOne
-    @MapsId("examId")
     @JoinColumn(name = "exam_id")
     private Exam exam;
 
     @ManyToOne
-    @MapsId("questionId")
     @JoinColumn(name = "question_id")
     private Question question;
 
