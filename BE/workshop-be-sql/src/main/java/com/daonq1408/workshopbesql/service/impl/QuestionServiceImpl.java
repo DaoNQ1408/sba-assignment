@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,9 +40,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<QuestionResponse> findAllQuestions() {
-        return questionRepository
-                .findAll()
-                .stream()
+        return questionRepository.findAll().stream()
                 .map(questionMapper::toResponse)
                 .toList();
     }

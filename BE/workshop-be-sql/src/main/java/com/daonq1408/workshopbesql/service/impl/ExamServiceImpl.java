@@ -41,9 +41,7 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public List<ExamResponse> getAll() {
-        return examRepository
-                .findAll()
-                .stream()
+        return examRepository.findAll().stream()
                 .map(examMapper::toResponse)
                 .toList();
     }

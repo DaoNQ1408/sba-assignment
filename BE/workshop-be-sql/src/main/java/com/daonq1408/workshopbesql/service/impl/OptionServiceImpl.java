@@ -40,9 +40,7 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     public List<OptionResponse> getAllOptions() {
-        return optionRepository
-                .findAll()
-                .stream()
+        return optionRepository.findAll().stream()
                 .map(optionMapper::toResponse)
                 .toList();
     }

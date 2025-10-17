@@ -51,9 +51,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
 
     @Override
     public List<QuestionTypeResponse> findAll() {
-        return questionTypeRepository
-                .findAll()
-                .stream()
+        return questionTypeRepository.findAll().stream()
                 .map(questionTypeMapper::toResponse)
                 .toList();
     }

@@ -1,6 +1,5 @@
 package com.daonq1408.workshopbesql.entity;
 
-import com.daonq1408.workshopbesql.entity.embedded.MatrixLessonId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatrixLesson {
-    @EmbeddedId
-    private MatrixLessonId id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "matrix_lesson_id")
+    private long id;
 
     @ManyToOne
     @MapsId("matrixId")

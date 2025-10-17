@@ -40,9 +40,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public List<TeacherResponse> getAll() {
-        return teacherRepository
-                .findAll()
-                .stream()
+        return teacherRepository.findAll().stream()
                 .map(teacherMapper::toResponse)
                 .toList();
     }

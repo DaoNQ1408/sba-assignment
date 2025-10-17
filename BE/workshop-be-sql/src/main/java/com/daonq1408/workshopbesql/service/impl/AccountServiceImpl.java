@@ -31,9 +31,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountResponse> getAll() {
-        return accountRepository
-                .findAll()
-                .stream()
+        return accountRepository.findAll().stream()
                 .map(accountMapper::toResponse)
                 .toList();
     }

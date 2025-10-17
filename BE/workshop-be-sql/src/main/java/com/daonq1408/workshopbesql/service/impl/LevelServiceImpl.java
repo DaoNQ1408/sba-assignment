@@ -31,9 +31,7 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public List<LevelResponse> getLevels() {
-        return levelRepository
-                .findAll()
-                .stream()
+        return levelRepository.findAll().stream()
                 .map(levelMapper::toResponse)
                 .toList();
     }

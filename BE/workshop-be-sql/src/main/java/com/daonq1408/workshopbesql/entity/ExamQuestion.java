@@ -1,6 +1,5 @@
 package com.daonq1408.workshopbesql.entity;
 
-import com.daonq1408.workshopbesql.entity.embedded.ExamQuestionId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExamQuestion {
 
-    @EmbeddedId
-    private ExamQuestionId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "exam_question_id")
+    private long id;
 
     @ManyToOne
     @MapsId("examId")
