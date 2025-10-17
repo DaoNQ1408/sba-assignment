@@ -16,17 +16,17 @@ import org.springframework.stereotype.Component;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface GradeMapper {
 
-    @Mapping(source = "subject.id", target = "subjectId")
+    @Mapping(target = "subjectId", source = "subject.id")
     GradeResponse toResponse(Grade grade);
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "subjectId", target = "subject")
+    @Mapping(target = "subject", source = "subjectId")
     Grade toEntity(GradeRequest gradeRequest);
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "subjectId", target = "subject")
+    @Mapping(target = "subject", source = "subjectId")
     void updateEntityFromRequest(@MappingTarget Grade grade,
                                  GradeRequest gradeRequest);
 }

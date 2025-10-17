@@ -17,17 +17,17 @@ import org.springframework.stereotype.Component;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExamMapper {
 
-    @Mapping(source = "matrix.id", target = "matrixId")
+    @Mapping(target = "matrixId", source = "matrix.id")
     ExamResponse toResponse(Exam exam);
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "matrixId", target = "matrix")
+    @Mapping(target = "matrix", source = "matrixId")
     Exam toEntity(ExamRequest examRequest);
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "matrixId", target = "matrix")
+    @Mapping(target = "matrix", source = "matrixId")
     void updateEntityFromRequest(@MappingTarget Exam exam,
                                  ExamRequest examRequest);
 }
