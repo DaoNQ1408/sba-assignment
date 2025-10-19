@@ -15,7 +15,7 @@ public class ExamQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exam_question_id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "exam_id")
@@ -26,5 +26,5 @@ public class ExamQuestion {
     private Question question;
 
     @Column(name = "point_percent")
-    private float pointPercent;
+    private Float pointPercent;
 }

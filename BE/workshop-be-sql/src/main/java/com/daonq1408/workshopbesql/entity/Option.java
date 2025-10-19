@@ -16,13 +16,13 @@ public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_id")
-    private long id;
+    private Long id;
 
     @Column(name = "option_text", nullable = false, length = 255)
     private String option;
 
     @Column(name = "is_true", nullable = false)
-    private boolean isTrue;
+    private Boolean isTrue;
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)

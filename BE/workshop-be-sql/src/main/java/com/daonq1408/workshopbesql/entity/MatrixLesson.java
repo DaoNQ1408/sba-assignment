@@ -15,7 +15,7 @@ public class MatrixLesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "matrix_lesson_id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "matrix_id")
@@ -34,5 +34,5 @@ public class MatrixLesson {
     private QuestionType questionType;
 
     @Column(name = "question_num")
-    private int questionNum;
+    private Integer questionNum;
 }

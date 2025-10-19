@@ -18,7 +18,7 @@ public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "level_id")
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
