@@ -24,8 +24,8 @@ public class Matrix {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id", nullable = false)
-    private Teacher teacher;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

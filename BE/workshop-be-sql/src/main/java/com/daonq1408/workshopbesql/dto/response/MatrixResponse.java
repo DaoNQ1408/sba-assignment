@@ -14,6 +14,6 @@ import java.time.LocalDateTime;
 public class MatrixResponse {
     private long id;
     private String title;
-    private long teacherId;
+    private long userId;
     private LocalDateTime createdAt;
 }

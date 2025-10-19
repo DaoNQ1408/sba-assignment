@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MatrixRequest {
     private String title;
-    private long teacherId;
+    private long userId;
 }
