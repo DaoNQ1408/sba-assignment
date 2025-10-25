@@ -9,6 +9,8 @@ import com.daonq1408.workshopbesql.repository.AccountRepository;
 import com.daonq1408.workshopbesql.service.AccountService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +39,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-    @Override
     @Transactional
     public AccountResponse saveAccount(AccountRequest accountRequest) {
 
@@ -100,5 +101,10 @@ public class AccountServiceImpl implements AccountService {
                         "Account already exists with mail: " +
                                 mail);
                 });
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

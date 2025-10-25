@@ -15,5 +15,8 @@ spring:
     show-sql: false
     database-platform: org.hibernate.dialect.SQLServer2012Dialect
 
+app:
+    jwt-secret: aHVuZ3RydW9uZ3NkZmdmdmRmY3ZkZnZkc3ZlcnMasESFwwWJbn12e2n3one23ior3bqy3
+    jwt-expiration-ms: 86400000
 server:
   port: 8080
