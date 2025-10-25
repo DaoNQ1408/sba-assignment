@@ -4,9 +4,11 @@ import com.daonq1408.workshopbesql.dto.request.SubjectRequest;
 import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.SubjectResponse;
 import com.daonq1408.workshopbesql.service.SubjectService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/subjects")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class SubjectController {
 
     private final SubjectService subjectService;
@@ -27,6 +30,7 @@ public class SubjectController {
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
         List<SubjectResponse> subjects = subjectService.getAllSubjects();
         return ResponseEntity.ok(ApiResponse.success(subjects, "All subjects retrieved successfully"));
