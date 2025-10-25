@@ -23,6 +23,7 @@ public class SubjectController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ApiResponse<SubjectResponse>> getSubject(@PathVariable long id) {
         SubjectResponse response = subjectService.getSubject(id);
         return ResponseEntity.ok(ApiResponse.success(response, "Subject retrieved successfully"));
@@ -30,7 +31,7 @@ public class SubjectController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
         List<SubjectResponse> subjects = subjectService.getAllSubjects();
         return ResponseEntity.ok(ApiResponse.success(subjects, "All subjects retrieved successfully"));
@@ -38,6 +39,7 @@ public class SubjectController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<SubjectResponse>> addSubject(@Valid @RequestBody SubjectRequest request) {
         SubjectResponse response = subjectService.addSubject(request);
         return ResponseEntity.ok(ApiResponse.success(response, "Subject added successfully"));
@@ -45,6 +47,7 @@ public class SubjectController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<SubjectResponse>> updateSubject(@PathVariable long id,
                                                                       @Valid @RequestBody SubjectRequest request) {
         SubjectResponse response = subjectService.updateSubject(id, request);
@@ -53,6 +56,7 @@ public class SubjectController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<SubjectResponse>> deleteSubject(@PathVariable long id) {
         SubjectResponse response = subjectService.deleteSubject(id);
         return ResponseEntity.ok(ApiResponse.success(response, "Subject deleted successfully"));

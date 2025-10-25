@@ -4,9 +4,11 @@ import com.daonq1408.workshopbesql.dto.request.MatrixRequest;
 import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.MatrixResponse;
 import com.daonq1408.workshopbesql.service.MatrixService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/matrices")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class MatrixController {
 
     private final MatrixService matrixService;
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<List<MatrixResponse>>> getAllMatrices() {
         List<MatrixResponse> resp = matrixService.getAll();
         return ResponseEntity.ok(ApiResponse.success(resp, "All matrices retrieved successfully"));
@@ -27,6 +31,7 @@ public class MatrixController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ApiResponse<MatrixResponse>> getMatrixById(@PathVariable long id) {
         MatrixResponse resp = matrixService.findResponseById(id);
         return ResponseEntity.ok(ApiResponse.success(resp, "Matrix retrieved successfully"));
@@ -34,6 +39,7 @@ public class MatrixController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ApiResponse<MatrixResponse>> createMatrix(@RequestBody MatrixRequest request) {
         MatrixResponse createdMatrix = matrixService.saveMatrix(request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -42,6 +48,7 @@ public class MatrixController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ApiResponse<MatrixResponse>> updateMatrix(@PathVariable long id,
                                                        @RequestBody MatrixRequest request) {
         MatrixResponse resp = matrixService.updateMatrix(id, request);
@@ -50,6 +57,7 @@ public class MatrixController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ApiResponse<MatrixResponse>> deleteMatrix(@PathVariable long id) {
         MatrixResponse resp = matrixService.deleteMatrix(id);
         return ResponseEntity.ok(ApiResponse.success(resp, "Matrix deleted successfully"));

@@ -24,7 +24,7 @@ public class LessonServiceImpl implements LessonService {
 
 
     @Override
-    public LessonResponse getLesson(long lessonId) {
+    public LessonResponse findLessonById(long lessonId) {
 
         Lesson lesson = findById(lessonId);
 

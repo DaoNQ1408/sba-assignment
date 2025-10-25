@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // Cho phép frontend gọi API từ domain khác nếu cần
 public class AuthController {
 
     private final AuthService authService;

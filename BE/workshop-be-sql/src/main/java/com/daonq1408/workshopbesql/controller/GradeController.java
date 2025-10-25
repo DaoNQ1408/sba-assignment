@@ -4,9 +4,11 @@ import com.daonq1408.workshopbesql.dto.request.GradeRequest;
 import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.GradeResponse;
 import com.daonq1408.workshopbesql.service.GradeService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/grades")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class GradeController {
 
     private final GradeService gradeService;
 
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ApiResponse<List<GradeResponse>>> getAllGrades() {
         List<GradeResponse> grades = gradeService.getAllGrades();
         return ResponseEntity.ok(ApiResponse.success(grades, "All grades retrieved"));
@@ -27,6 +31,7 @@ public class GradeController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ApiResponse<GradeResponse>> getGradeById(@PathVariable long id) {
         GradeResponse grade = gradeService.getGradeById(id);
         return ResponseEntity.ok(ApiResponse.success(grade, "Grade retrieved"));
@@ -34,6 +39,7 @@ public class GradeController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<GradeResponse>> addGrade(@Valid @RequestBody GradeRequest request) {
         GradeResponse grade = gradeService.saveGrade(request);
         return ResponseEntity.ok(ApiResponse.success(grade, "Grade added successfully"));
@@ -41,6 +47,7 @@ public class GradeController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<GradeResponse>> updateGrade(@PathVariable long id,
                                                                   @Valid @RequestBody GradeRequest request) {
         GradeResponse grade = gradeService.updateGrade(id, request);
@@ -49,6 +56,7 @@ public class GradeController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<GradeResponse>> deleteGrade(@PathVariable long id) {
         GradeResponse grade = gradeService.deleteGrade(id);
         return ResponseEntity.ok(ApiResponse.success(grade, "Grade deleted successfully"));

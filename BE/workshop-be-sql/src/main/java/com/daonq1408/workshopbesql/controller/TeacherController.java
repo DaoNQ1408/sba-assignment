@@ -4,9 +4,11 @@ import com.daonq1408.workshopbesql.dto.request.UserRequest;
 import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.UserResponse;
 import com.daonq1408.workshopbesql.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/teachers")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class TeacherController {
 
     private final UserService userService;
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllTeachers() {
         List<UserResponse> resp = userService.getAll();
         return ResponseEntity.ok(ApiResponse.success(resp, "All teachers retrieved successfully"));
@@ -27,6 +31,7 @@ public class TeacherController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> getTeacherById(@PathVariable long id) {
         UserResponse resp = userService.findResponseById(id);
         return ResponseEntity.ok(ApiResponse.success(resp, "Teacher retrieved successfully"));
@@ -34,6 +39,7 @@ public class TeacherController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> createTeacher(@RequestBody UserRequest request) {
         UserResponse created = userService.saveTeacher(request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -42,6 +48,7 @@ public class TeacherController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> updateTeacher(@PathVariable long id,
                                                       @RequestBody UserRequest request) {
         UserResponse resp = userService.updateTeacher(id, request);
@@ -50,6 +57,7 @@ public class TeacherController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> deleteTeacher(@PathVariable long id) {
         UserResponse resp = userService.deleteTeacher(id);
         return ResponseEntity.ok(ApiResponse.success(resp, "Teacher deleted successfully"));
