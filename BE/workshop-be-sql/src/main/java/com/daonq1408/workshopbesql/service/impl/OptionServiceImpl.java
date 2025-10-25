@@ -45,6 +45,13 @@ public class OptionServiceImpl implements OptionService {
                 .toList();
     }
 
+    @Override
+    public List<OptionResponse> findByQuestionId(long questionId) {
+        return optionRepository.findByQuestionId(questionId).stream()
+                .map(optionMapper::toResponse)
+                .toList();
+    }
+
 
     @Override
     @Transactional

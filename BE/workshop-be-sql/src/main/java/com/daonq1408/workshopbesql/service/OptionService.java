@@ -10,6 +10,7 @@ public interface OptionService {
     Option findById(long optionId);
     OptionResponse getById(long optionId);
     List<OptionResponse> getAllOptions();
+    List<OptionResponse> findByQuestionId(long questionId);
     OptionResponse saveOption(OptionRequest optionRequest);
     OptionResponse updateOption(long optionId, OptionRequest optionRequest);
     OptionResponse deleteOption(long optionId);

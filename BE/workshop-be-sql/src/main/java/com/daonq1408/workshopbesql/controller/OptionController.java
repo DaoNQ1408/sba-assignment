@@ -33,6 +33,13 @@ public class OptionController {
     }
 
 
+    @GetMapping("/question/{id}")
+    public ResponseEntity<ApiResponse<List<OptionResponse>>> getOptionByQuestionId(@PathVariable long id) {
+        List<OptionResponse> resp = optionService.findByQuestionId(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "Options retrieved successfully"));
+    }
+
+
     @PostMapping
     public ResponseEntity<ApiResponse<OptionResponse>> createOption(@RequestBody OptionRequest request) {
         OptionResponse createdOption = optionService.saveOption(request);
