@@ -1,10 +1,12 @@
 package com.daonq1408.workshopbesql.controller;
 
 import com.daonq1408.workshopbesql.dto.request.MatrixLessonRequest;
+import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.MatrixLessonResponse;
 import com.daonq1408.workshopbesql.service.MatrixLessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,33 +20,38 @@ public class MatrixLessonController {
 
 
     @GetMapping
-    public List<MatrixLessonResponse> getAll() {
-        return matrixLessonService.getAll();
+    public ResponseEntity<ApiResponse<List<MatrixLessonResponse>>> getAll() {
+        List<MatrixLessonResponse> resp = matrixLessonService.getAll();
+        return ResponseEntity.ok(ApiResponse.success(resp, "All matrix lessons retrieved successfully"));
     }
 
 
     @GetMapping("/{id}")
-    public MatrixLessonResponse getById(@PathVariable long id) {
-        return matrixLessonService.findResponseById(id);
+    public ResponseEntity<ApiResponse<MatrixLessonResponse>> getById(@PathVariable long id) {
+        MatrixLessonResponse resp = matrixLessonService.findResponseById(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "MatrixLesson retrieved successfully"));
     }
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public MatrixLessonResponse create(@RequestBody MatrixLessonRequest request) {
-        return matrixLessonService.saveMatrixLesson(request);
+    public ResponseEntity<ApiResponse<MatrixLessonResponse>> create(@RequestBody MatrixLessonRequest request) {
+        MatrixLessonResponse resp = matrixLessonService.saveMatrixLesson(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(resp, "MatrixLesson created successfully"));
     }
 
 
     @PutMapping("/{id}")
-    public MatrixLessonResponse update(@PathVariable long id,
+    public ResponseEntity<ApiResponse<MatrixLessonResponse>> update(@PathVariable long id,
                                        @RequestBody MatrixLessonRequest request) {
-        return matrixLessonService.updateMatrixLesson(id, request);
+        MatrixLessonResponse resp = matrixLessonService.updateMatrixLesson(id, request);
+        return ResponseEntity.ok(ApiResponse.success(resp, "MatrixLesson updated successfully"));
     }
 
 
     @DeleteMapping("/{id}")
-    public MatrixLessonResponse delete(@PathVariable long id) {
-        return matrixLessonService.deleteMatrixLesson(id);
+    public ResponseEntity<ApiResponse<MatrixLessonResponse>> delete(@PathVariable long id) {
+        MatrixLessonResponse resp = matrixLessonService.deleteMatrixLesson(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "MatrixLesson deleted successfully"));
     }
 }

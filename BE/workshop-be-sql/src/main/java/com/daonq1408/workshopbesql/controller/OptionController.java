@@ -1,6 +1,7 @@
 package com.daonq1408.workshopbesql.controller;
 
 import com.daonq1408.workshopbesql.dto.request.OptionRequest;
+import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.OptionResponse;
 import com.daonq1408.workshopbesql.service.OptionService;
 import lombok.RequiredArgsConstructor;
@@ -19,33 +20,38 @@ public class OptionController {
 
 
     @GetMapping
-    public ResponseEntity<List<OptionResponse>> getAllOptions() {
-        return ResponseEntity.ok(optionService.getAllOptions());
+    public ResponseEntity<ApiResponse<List<OptionResponse>>> getAllOptions() {
+        List<OptionResponse> resp = optionService.getAllOptions();
+        return ResponseEntity.ok(ApiResponse.success(resp, "All options retrieved successfully"));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<OptionResponse> getOptionById(@PathVariable long id) {
-        return ResponseEntity.ok(optionService.getById(id));
+    public ResponseEntity<ApiResponse<OptionResponse>> getOptionById(@PathVariable long id) {
+        OptionResponse resp = optionService.getById(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "Option retrieved successfully"));
     }
 
 
     @PostMapping
-    public ResponseEntity<OptionResponse> createOption(@RequestBody OptionRequest request) {
+    public ResponseEntity<ApiResponse<OptionResponse>> createOption(@RequestBody OptionRequest request) {
         OptionResponse createdOption = optionService.saveOption(request);
-        return new ResponseEntity<>(createdOption, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(createdOption, "Option created successfully"));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<OptionResponse> updateOption(@PathVariable long id,
+    public ResponseEntity<ApiResponse<OptionResponse>> updateOption(@PathVariable long id,
                                                        @RequestBody OptionRequest request) {
-        return ResponseEntity.ok(optionService.updateOption(id, request));
+        OptionResponse resp = optionService.updateOption(id, request);
+        return ResponseEntity.ok(ApiResponse.success(resp, "Option updated successfully"));
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OptionResponse> deleteOption(@PathVariable long id) {
-        return ResponseEntity.ok(optionService.deleteOption(id));
+    public ResponseEntity<ApiResponse<OptionResponse>> deleteOption(@PathVariable long id) {
+        OptionResponse resp = optionService.deleteOption(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "Option deleted successfully"));
     }
 }

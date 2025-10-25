@@ -1,6 +1,7 @@
 package com.daonq1408.workshopbesql.controller;
 
 import com.daonq1408.workshopbesql.dto.request.QuestionTypeRequest;
+import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.QuestionTypeResponse;
 import com.daonq1408.workshopbesql.service.QuestionTypeService;
 import lombok.RequiredArgsConstructor;
@@ -19,33 +20,38 @@ public class QuestionTypeController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<QuestionTypeResponse>> getAllQuestionTypes() {
-        return ResponseEntity.ok(questionTypeService.findAll());
+    public ResponseEntity<ApiResponse<List<QuestionTypeResponse>>> getAllQuestionTypes() {
+        List<QuestionTypeResponse> resp = questionTypeService.findAll();
+        return ResponseEntity.ok(ApiResponse.success(resp, "All question types retrieved successfully"));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuestionTypeResponse> getQuestionTypeById(@PathVariable long id) {
-        return ResponseEntity.ok(questionTypeService.getById(id));
+    public ResponseEntity<ApiResponse<QuestionTypeResponse>> getQuestionTypeById(@PathVariable long id) {
+        QuestionTypeResponse resp = questionTypeService.getById(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "QuestionType retrieved successfully"));
     }
 
 
     @PostMapping
-    public ResponseEntity<QuestionTypeResponse> createQuestionType(@RequestBody QuestionTypeRequest request) {
-        QuestionTypeResponse createdQuestionType = questionTypeService.save(request);
-        return new ResponseEntity<>(createdQuestionType, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<QuestionTypeResponse>> createQuestionType(@RequestBody QuestionTypeRequest request) {
+        QuestionTypeResponse created = questionTypeService.save(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(created, "QuestionType created successfully"));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<QuestionTypeResponse> updateQuestionType(@PathVariable long id,
+    public ResponseEntity<ApiResponse<QuestionTypeResponse>> updateQuestionType(@PathVariable long id,
                                                                    @RequestBody QuestionTypeRequest request) {
-        return ResponseEntity.ok(questionTypeService.update(id, request));
+        QuestionTypeResponse resp = questionTypeService.update(id, request);
+        return ResponseEntity.ok(ApiResponse.success(resp, "QuestionType updated successfully"));
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<QuestionTypeResponse> deleteQuestionType(@PathVariable long id) {
-        return ResponseEntity.ok(questionTypeService.delete(id));
+    public ResponseEntity<ApiResponse<QuestionTypeResponse>> deleteQuestionType(@PathVariable long id) {
+        QuestionTypeResponse resp = questionTypeService.delete(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "QuestionType deleted successfully"));
     }
 }

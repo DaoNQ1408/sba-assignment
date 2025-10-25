@@ -1,6 +1,7 @@
 package com.daonq1408.workshopbesql.controller;
 
 import com.daonq1408.workshopbesql.dto.request.MatrixRequest;
+import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.MatrixResponse;
 import com.daonq1408.workshopbesql.service.MatrixService;
 import lombok.RequiredArgsConstructor;
@@ -19,33 +20,38 @@ public class MatrixController {
 
 
     @GetMapping
-    public ResponseEntity<List<MatrixResponse>> getAllMatrices() {
-        return ResponseEntity.ok(matrixService.getAll());
+    public ResponseEntity<ApiResponse<List<MatrixResponse>>> getAllMatrices() {
+        List<MatrixResponse> resp = matrixService.getAll();
+        return ResponseEntity.ok(ApiResponse.success(resp, "All matrices retrieved successfully"));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<MatrixResponse> getMatrixById(@PathVariable long id) {
-        return ResponseEntity.ok(matrixService.findResponseById(id));
+    public ResponseEntity<ApiResponse<MatrixResponse>> getMatrixById(@PathVariable long id) {
+        MatrixResponse resp = matrixService.findResponseById(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "Matrix retrieved successfully"));
     }
 
 
     @PostMapping
-    public ResponseEntity<MatrixResponse> createMatrix(@RequestBody MatrixRequest request) {
+    public ResponseEntity<ApiResponse<MatrixResponse>> createMatrix(@RequestBody MatrixRequest request) {
         MatrixResponse createdMatrix = matrixService.saveMatrix(request);
-        return new ResponseEntity<>(createdMatrix, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(createdMatrix, "Matrix created successfully"));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<MatrixResponse> updateMatrix(@PathVariable long id,
+    public ResponseEntity<ApiResponse<MatrixResponse>> updateMatrix(@PathVariable long id,
                                                        @RequestBody MatrixRequest request) {
-        return ResponseEntity.ok(matrixService.updateMatrix(id, request));
+        MatrixResponse resp = matrixService.updateMatrix(id, request);
+        return ResponseEntity.ok(ApiResponse.success(resp, "Matrix updated successfully"));
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MatrixResponse> deleteMatrix(@PathVariable long id) {
-        return ResponseEntity.ok(matrixService.deleteMatrix(id));
+    public ResponseEntity<ApiResponse<MatrixResponse>> deleteMatrix(@PathVariable long id) {
+        MatrixResponse resp = matrixService.deleteMatrix(id);
+        return ResponseEntity.ok(ApiResponse.success(resp, "Matrix deleted successfully"));
     }
 }

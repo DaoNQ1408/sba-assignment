@@ -1,10 +1,10 @@
 package com.daonq1408.workshopbesql.controller;
 
 import com.daonq1408.workshopbesql.dto.request.ExamRequest;
+import com.daonq1408.workshopbesql.dto.response.ApiResponse;
 import com.daonq1408.workshopbesql.dto.response.ExamResponse;
 import com.daonq1408.workshopbesql.service.ExamService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,33 +19,37 @@ public class ExamController {
 
 
     @GetMapping
-    public ResponseEntity<List<ExamResponse>> getAllExams() {
-        return ResponseEntity.ok(examService.getAll());
+    public ResponseEntity<ApiResponse<List<ExamResponse>>> getAllExams() {
+        List<ExamResponse> exams = examService.getAll();
+        return ResponseEntity.ok(ApiResponse.success(exams, "All exams retrieved successfully"));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExamResponse> getExamById(@PathVariable long id) {
-        return ResponseEntity.ok(examService.getById(id));
+    public ResponseEntity<ApiResponse<ExamResponse>> getExamById(@PathVariable long id) {
+        ExamResponse exam = examService.getById(id);
+        return ResponseEntity.ok(ApiResponse.success(exam, "Exam retrieved successfully"));
     }
 
 
     @PostMapping
-    public ResponseEntity<ExamResponse> createExam(@RequestBody ExamRequest request) {
+    public ResponseEntity<ApiResponse<ExamResponse>> createExam(@RequestBody ExamRequest request) {
         ExamResponse createdExam = examService.saveExam(request);
-        return new ResponseEntity<>(createdExam, HttpStatus.CREATED);
+        return ResponseEntity.ok(ApiResponse.success(createdExam, "Exam created successfully"));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<ExamResponse> updateExam(@PathVariable long id,
+    public ResponseEntity<ApiResponse<ExamResponse>> updateExam(@PathVariable long id,
                                                    @RequestBody ExamRequest request) {
-        return ResponseEntity.ok(examService.updateExam(id, request));
+        ExamResponse updatedExam = examService.updateExam(id, request);
+        return ResponseEntity.ok(ApiResponse.success(updatedExam, "Exam updated successfully"));
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ExamResponse> deleteExam(@PathVariable long id) {
-        return ResponseEntity.ok(examService.deleteExam(id));
+    public ResponseEntity<ApiResponse<ExamResponse>> deleteExam(@PathVariable long id) {
+        ExamResponse deletedExam = examService.deleteExam(id);
+        return ResponseEntity.ok(ApiResponse.success(deletedExam, "Exam deleted successfully"));
     }
 }
