@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class LessonResponse {
     private long id;
     private String title;
-    private long gradeId;
+    private GradeResponse grade;
 }

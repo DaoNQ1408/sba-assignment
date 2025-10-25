@@ -16,17 +16,20 @@ import org.springframework.stereotype.Component;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OptionMapper {
 
-    @Mapping(target = "questionId", source = "question.id")
+    @Mapping(target = "optionId", source = "id")
+    @Mapping(target = "correct", source = "correct")
     OptionResponse toResponse(Option option);
 
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "question", source = "questionId")
+    @Mapping(target = "correct", source = "correct")
     Option toEntity(OptionRequest optionRequest);
 
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "question", source = "questionId")
+    @Mapping(target = "correct", source = "correct")
     void updateEntityFromRequest(@MappingTarget Option option,
                                  OptionRequest optionRequest);
 }

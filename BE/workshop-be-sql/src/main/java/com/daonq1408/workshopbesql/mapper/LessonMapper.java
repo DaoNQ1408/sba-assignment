@@ -12,11 +12,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Mapper(componentModel = "spring",
-        uses = {GradeService.class},
+        uses = {GradeService.class,
+                GradeMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LessonMapper {
 
-    @Mapping(source = "grade.id", target = "gradeId")
+    @Mapping(target = "grade", source = "grade")
     LessonResponse toResponse(Lesson lesson);
 
 

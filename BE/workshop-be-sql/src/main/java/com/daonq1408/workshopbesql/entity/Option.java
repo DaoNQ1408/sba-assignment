@@ -22,7 +22,7 @@ public class Option {
     private String option;
 
     @Column(name = "is_true", nullable = false)
-    private Boolean isTrue;
+    private boolean correct;
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)

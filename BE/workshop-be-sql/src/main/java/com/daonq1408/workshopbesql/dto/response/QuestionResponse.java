@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +14,8 @@ import lombok.NoArgsConstructor;
 public class QuestionResponse {
     private long id;
     private String question;
-    private long lessonId;
-    private long levelId;
-    private long questionTypeId;
+    private LessonResponse lesson;
+    private LevelResponse level;
+    private QuestionTypeResponse questionType;
+    private List<OptionResponse> options;
 }

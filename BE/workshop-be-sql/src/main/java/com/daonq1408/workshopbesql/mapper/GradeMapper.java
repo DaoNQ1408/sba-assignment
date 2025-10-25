@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public interface GradeMapper {
 
     @Mapping(target = "subjectId", source = "subject.id")
+    @Mapping(target = "subjectName", source = "subject.name")
     GradeResponse toResponse(Grade grade);
 
 

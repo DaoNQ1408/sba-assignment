@@ -13,4 +13,5 @@ public class GradeResponse {
     private long id;
     private String grade;
     private long subjectId;
+    private String subjectName;
 }

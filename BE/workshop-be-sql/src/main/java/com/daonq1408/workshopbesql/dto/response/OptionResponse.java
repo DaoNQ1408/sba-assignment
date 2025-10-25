@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class OptionResponse {
     private long optionId;
     private String option;
-    private boolean isTrue;
-    private long questionId;
+    private boolean correct;
 }

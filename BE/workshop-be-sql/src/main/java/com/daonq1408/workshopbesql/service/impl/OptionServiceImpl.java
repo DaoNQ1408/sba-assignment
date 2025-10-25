@@ -49,7 +49,7 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public OptionResponse saveOption(OptionRequest optionRequest) {
-
+        System.out.println(optionRequest.toString());
         Option option = optionMapper.toEntity(optionRequest);
         Option savedOption = optionRepository.save(option);
 

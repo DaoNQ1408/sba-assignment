@@ -16,13 +16,16 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring",
         uses = {LessonService.class,
                 LevelService.class,
-                QuestionTypeService.class},
+                QuestionTypeService.class,
+                LessonMapper.class,
+                LevelMapper.class,
+                QuestionTypeMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionMapper {
 
-    @Mapping(target = "lessonId", source = "lesson.id")
-    @Mapping(target = "levelId", source = "level.id")
-    @Mapping(target = "questionTypeId", source = "questionType.id")
+    @Mapping(target = "lesson", source = "lesson")
+    @Mapping(target = "level", source = "level")
+    @Mapping(target = "questionType", source = "questionType")
     QuestionResponse toResponse(Question question);
 
 
