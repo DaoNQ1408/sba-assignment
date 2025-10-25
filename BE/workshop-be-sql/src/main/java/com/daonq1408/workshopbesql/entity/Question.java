@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "questions")
 @Data
@@ -30,4 +32,7 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "question_type_id", nullable = false)
     private QuestionType questionType;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Option> options;
 }
